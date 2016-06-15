@@ -1,4 +1,5 @@
-// import Foundation
+// 'Swifty' API wrapper for ObjC diff_match_patch module
+
 import diff_match_patch
 
 func computeDiff(a: String?, b: String?, checklines: Bool = true) -> [Diff] {
@@ -9,8 +10,3 @@ func computeDiff(a: String?, b: String?, checklines: Bool = true) -> [Diff] {
         return [Diff]()
     }
 }
-
-// struct DiffMatchPatch {
-//
-//     var text = "Hello, World!"
-// }
