@@ -3,7 +3,7 @@ import XCTest
 
 // Tests for the 'swifty' API wrapper around the ObjC diff_patch_match module
 
-class DiffMatchPatchTests: XCTestCase {
+class SwiftWrapperTests: XCTestCase {
     
     func test_computeDiff() {
         let d = computeDiff(a: "foo2bar", b: "foobar")
@@ -16,7 +16,7 @@ class DiffMatchPatchTests: XCTestCase {
         expect(d[2].text) == "bar"
     }
 
-    static var allTests : [(String, (DiffMatchPatchTests) -> () throws -> Void)] {
+    static var allTests : [(String, (SwiftWrapperTests) -> () throws -> Void)] {
         return [
             ("test_computeDiff", test_computeDiff),
         ]
