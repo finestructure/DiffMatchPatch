@@ -488,91 +488,96 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Two overlap eliminations.")
     }
 
-// func test_diff_cleanupEfficiency() {
-//   let dmp = DiffMatchPatch()
-//   NSMutableArray *expectedResult = nil;
-//
-//   // Cleanup operationally trivial equalities.
-//   dmp.Diff_EditCost = 4;
-//   // Null case.
-//   NSMutableArray *diffs = [NSMutableArray array];
-//   [dmp diff_cleanupEfficiency:diffs];
-//   XCTAssertEqual([NSMutableArray array], diffs, "Null case.")
-//
-//   // No elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"wxyz"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"34")]
-//   [dmp diff_cleanupEfficiency:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"wxyz"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"34")]
-//   XCTAssertEqual(expectedResult, diffs, "No elimination.")
-//
-//   // Four-edit elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"xyz"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"34")]
-//   [dmp diff_cleanupEfficiency:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abxyzcd"),
-//       Diff(operation:.diffInsert, andText:"12xyz34")]
-//   XCTAssertEqual(expectedResult, diffs, "Four-edit elimination.")
-//
-//   // Three-edit elimination.
-//   diffs = [
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"x"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"34")]
-//   [dmp diff_cleanupEfficiency:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"xcd"),
-//       Diff(operation:.diffInsert, andText:"12x34")]
-//   XCTAssertEqual(expectedResult, diffs, "Three-edit elimination.")
-//
-//   // Backpass elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"xy"),
-//       Diff(operation:.diffInsert, andText:"34"),
-//       Diff(operation:.diffEqual, andText:"z"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"56")]
-//   [dmp diff_cleanupEfficiency:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abxyzcd"),
-//       Diff(operation:.diffInsert, andText:"12xy34z56")]
-//   XCTAssertEqual(expectedResult, diffs, "Backpass elimination.")
-//
-//   // High cost elimination.
-//   dmp.Diff_EditCost = 5;
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"12"),
-//       Diff(operation:.diffEqual, andText:"wxyz"),
-//       Diff(operation:.diffDelete, andText:"cd"),
-//       Diff(operation:.diffInsert, andText:"34")]
-//   [dmp diff_cleanupEfficiency:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abwxyzcd"),
-//       Diff(operation:.diffInsert, andText:"12wxyz34")]
-//   XCTAssertEqual(expectedResult, diffs, "High cost elimination.")
-//   dmp.Diff_EditCost = 4;
-//
-//   [dmp release];
-// }
-//
+    func test_diff_cleanupEfficiency() {
+        let dmp = DiffMatchPatch()
+
+        // Cleanup operationally trivial equalities.
+        dmp.diff_EditCost = 4;
+        // Null case.
+        var diffs = dmp.diff_cleanupEfficiency([Diff]())
+        XCTAssertEqual([Diff](), diffs, "Null case.")
+
+        // No elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"wxyz"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"34")
+        ]
+        diffs = dmp.diff_cleanupEfficiency(diffs)
+        var expectedResult = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"wxyz"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"34")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "No elimination.")
+
+        // Four-edit elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"xyz"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"34")
+        ]
+        diffs = dmp.diff_cleanupEfficiency(diffs)
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abxyzcd"),
+            Diff(operation:.diffInsert, andText:"12xyz34")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "Four-edit elimination.")
+
+        // Three-edit elimination.
+        diffs = [
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"x"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"34")
+        ]
+        diffs = dmp.diff_cleanupEfficiency(diffs)
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"xcd"),
+            Diff(operation:.diffInsert, andText:"12x34")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "Three-edit elimination.")
+
+        // Backpass elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"xy"),
+            Diff(operation:.diffInsert, andText:"34"),
+            Diff(operation:.diffEqual, andText:"z"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"56")
+        ]
+        diffs = dmp.diff_cleanupEfficiency(diffs)
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abxyzcd"),
+            Diff(operation:.diffInsert, andText:"12xy34z56")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "Backpass elimination.")
+
+        // High cost elimination.
+        dmp.diff_EditCost = 5;
+        diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"12"),
+            Diff(operation:.diffEqual, andText:"wxyz"),
+            Diff(operation:.diffDelete, andText:"cd"),
+            Diff(operation:.diffInsert, andText:"34")
+        ]
+        diffs = dmp.diff_cleanupEfficiency(diffs)
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abwxyzcd"),
+            Diff(operation:.diffInsert, andText:"12wxyz34")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "High cost elimination.")
+    }
+
 // func test_diff_prettyHtml() {
 //   let dmp = DiffMatchPatch()
 //
