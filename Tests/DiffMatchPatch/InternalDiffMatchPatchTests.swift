@@ -149,47 +149,44 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(tmpVector, result[2] as! [String], "More than 256 #5.")
     }
 
+
+func test_diff_charsToLines() {
+    // TODO: WIP, interrupted by having to update DMP sources from aerogear master
+    // let dmp = DiffMatchPatch()
+    //
+    // // Convert chars up to lines.
+    // let diffs = [
+        //     Diff.diff(with:.diffEqual, andText:"\u{01}\u{02}\u{01}")!,
+        //     Diff.diff(with:.diffInsert, andText:"\u{02}\u{01}\u{02}")!
+        // ]
+        // var tmpVector = ["", "alpha\n", "beta\n"]
+        // dmp.diff_chars(diffs, toLines:tmpVector)
+        // let expectedResult = [
+            //     Diff.diff(with:.diffEqual, andText:"alpha\nbeta\nalpha\n"),
+            //     Diff.diff(with:.diffInsert, andText:"beta\nalpha\nbeta\n")
+            // ]
+            // XCTAssertEqual(expectedResult, diffs, "Shared lines.")
+
+  // // More than 256 to reveal any 8-bit limitations.
+  // unichar n = 300;
+  // [tmpVector removeAllObjects];
+  // NSMutableString *lines = [NSMutableString string];
+  // NSMutableString *chars = [NSMutableString string];
+  // NSString *currentLine;
+  // for (unichar x = 1; x < n + 1; x++) {
+  //   currentLine = [NSString stringWithFormat:"%d\n", (int)x];
+  //   [tmpVector addObject:currentLine];
+  //   [lines appendString:currentLine];
+  //   [chars appendString:[NSString stringWithFormat:"%C", x]];
+  // }
+  // XCTAssertEqual(n, tmpVector.count, "More than 256 #1.")
+  // XCTAssertEqual(n, chars.length, "More than 256 #2.")
+  // [tmpVector insertObject:"" atIndex:0];
+  // diffs = [NSArray arrayWithObject:Diff.diff(operation:.diffDelete andText:chars]];
+  // [dmp diff_chars:diffs toLines:tmpVector];
+  // XCTAssertEqual([NSArray arrayWithObject:Diff.diff(operation:.diffDelete andText:lines]], diffs, "More than 256 #3.")
 }
 
-// func test_diff_charsToLines() {
-//   let dmp = DiffMatchPatch()
-//
-//   // Convert chars up to lines.
-//   NSArray *diffs = [
-//       [Diff diffWithOperation:OperationDiffEqual andText:"\u{01}\u{02}\u{01}"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"\u{02}\u{01}\u{02}")]
-//   NSMutableArray *tmpVector = [NSMutableArray array]; // Array of NSString objects.
-//   [tmpVector addObject:"")
-//   [tmpVector addObject:"alpha\n")
-//   [tmpVector addObject:"beta\n")
-//   [dmp diff_chars:diffs toLines:tmpVector];
-//   NSArray *expectedResult = [
-//       [Diff diffWithOperation:OperationDiffEqual andText:"alpha\nbeta\nalpha\n"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"beta\nalpha\nbeta\n")]
-//   XCTAssertEqual(expectedResult, diffs, "Shared lines.")
-//
-//   // More than 256 to reveal any 8-bit limitations.
-//   unichar n = 300;
-//   [tmpVector removeAllObjects];
-//   NSMutableString *lines = [NSMutableString string];
-//   NSMutableString *chars = [NSMutableString string];
-//   NSString *currentLine;
-//   for (unichar x = 1; x < n + 1; x++) {
-//     currentLine = [NSString stringWithFormat:"%d\n", (int)x];
-//     [tmpVector addObject:currentLine];
-//     [lines appendString:currentLine];
-//     [chars appendString:[NSString stringWithFormat:"%C", x]];
-//   }
-//   XCTAssertEqual(n, tmpVector.count, "More than 256 #1.")
-//   XCTAssertEqual(n, chars.length, "More than 256 #2.")
-//   [tmpVector insertObject:"" atIndex:0];
-//   diffs = [NSArray arrayWithObject:[Diff diffWithOperation:OperationDiffDelete andText:chars]];
-//   [dmp diff_chars:diffs toLines:tmpVector];
-//   XCTAssertEqual([NSArray arrayWithObject:[Diff diffWithOperation:OperationDiffDelete andText:lines]], diffs, "More than 256 #3.")
-//
-//   [dmp release];
-// }
-//
 // func test_diff_cleanupMerge() {
 //   let dmp = DiffMatchPatch()
 //   NSMutableArray *expectedResult = nil;
@@ -201,69 +198,69 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   XCTAssertEqual([NSMutableArray array], diffs, "Null case.")
 //
 //   // No change case.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"b"), [Diff diffWithOperation:OperationDiffInsert andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"b"), Diff.diff(operation:.diffInsert andText:"c")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"b"), [Diff diffWithOperation:OperationDiffInsert andText:"c")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"b"), Diff.diff(operation:.diffInsert andText:"c")]
 //   XCTAssertEqual(expectedResult, diffs, "No change case.")
 //
 //   // Merge equalities.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffEqual andText:"b"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffEqual andText:"b"), Diff.diff(operation:.diffEqual andText:"c")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"abc")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"abc")]
 //   XCTAssertEqual(expectedResult, diffs, "Merge equalities.")
 //
 //   // Merge deletions.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"b"), [Diff diffWithOperation:OperationDiffDelete andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffDelete andText:"b"), Diff.diff(operation:.diffDelete andText:"c")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"abc")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"abc")]
 //   XCTAssertEqual(expectedResult, diffs, "Merge deletions.")
 //
 //   // Merge insertions.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffInsert andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"b"), [Diff diffWithOperation:OperationDiffInsert andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffInsert andText:"a"), Diff.diff(operation:.diffInsert andText:"b"), Diff.diff(operation:.diffInsert andText:"c")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffInsert andText:"abc")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffInsert andText:"abc")]
 //   XCTAssertEqual(expectedResult, diffs, "Merge insertions.")
 //
 //   // Merge interweave.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"b"), [Diff diffWithOperation:OperationDiffDelete andText:"c"), [Diff diffWithOperation:OperationDiffInsert andText:"d"), [Diff diffWithOperation:OperationDiffEqual andText:"e"), [Diff diffWithOperation:OperationDiffEqual andText:"f")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffInsert andText:"b"), Diff.diff(operation:.diffDelete andText:"c"), Diff.diff(operation:.diffInsert andText:"d"), Diff.diff(operation:.diffEqual andText:"e"), Diff.diff(operation:.diffEqual andText:"f")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"ac"), [Diff diffWithOperation:OperationDiffInsert andText:"bd"), [Diff diffWithOperation:OperationDiffEqual andText:"ef")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"ac"), Diff.diff(operation:.diffInsert andText:"bd"), Diff.diff(operation:.diffEqual andText:"ef")]
 //   XCTAssertEqual(expectedResult, diffs, "Merge interweave.")
 //
 //   // Prefix and suffix detection.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"abc"), [Diff diffWithOperation:OperationDiffDelete andText:"dc")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffInsert andText:"abc"), Diff.diff(operation:.diffDelete andText:"dc")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"d"), [Diff diffWithOperation:OperationDiffInsert andText:"b"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"d"), Diff.diff(operation:.diffInsert andText:"b"), Diff.diff(operation:.diffEqual andText:"c")]
 //   XCTAssertEqual(expectedResult, diffs, "Prefix and suffix detection.")
 //
 //   // Prefix and suffix detection with equalities.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"x"), [Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"abc"), [Diff diffWithOperation:OperationDiffDelete andText:"dc"), [Diff diffWithOperation:OperationDiffEqual andText:"y")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"x"), Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffInsert andText:"abc"), Diff.diff(operation:.diffDelete andText:"dc"), Diff.diff(operation:.diffEqual andText:"y")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"xa"), [Diff diffWithOperation:OperationDiffDelete andText:"d"), [Diff diffWithOperation:OperationDiffInsert andText:"b"), [Diff diffWithOperation:OperationDiffEqual andText:"cy")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"xa"), Diff.diff(operation:.diffDelete andText:"d"), Diff.diff(operation:.diffInsert andText:"b"), Diff.diff(operation:.diffEqual andText:"cy")]
 //   XCTAssertEqual(expectedResult, diffs, "Prefix and suffix detection with equalities.")
 //
 //   // Slide edit left.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"ba"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffInsert andText:"ba"), Diff.diff(operation:.diffEqual andText:"c")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffInsert andText:"ab"), [Diff diffWithOperation:OperationDiffEqual andText:"ac")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffInsert andText:"ab"), Diff.diff(operation:.diffEqual andText:"ac")]
 //   XCTAssertEqual(expectedResult, diffs, "Slide edit left.")
 //
 //   // Slide edit right.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"c"), [Diff diffWithOperation:OperationDiffInsert andText:"ab"), [Diff diffWithOperation:OperationDiffEqual andText:"a")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"c"), Diff.diff(operation:.diffInsert andText:"ab"), Diff.diff(operation:.diffEqual andText:"a")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"ca"), [Diff diffWithOperation:OperationDiffInsert andText:"ba")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"ca"), Diff.diff(operation:.diffInsert andText:"ba")]
 //   XCTAssertEqual(expectedResult, diffs, "Slide edit right.")
 //
 //   // Slide edit left recursive.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"b"), [Diff diffWithOperation:OperationDiffEqual andText:"c"), [Diff diffWithOperation:OperationDiffDelete andText:"ac"), [Diff diffWithOperation:OperationDiffEqual andText:"x")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"b"), Diff.diff(operation:.diffEqual andText:"c"), Diff.diff(operation:.diffDelete andText:"ac"), Diff.diff(operation:.diffEqual andText:"x")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"abc"), [Diff diffWithOperation:OperationDiffEqual andText:"acx")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"abc"), Diff.diff(operation:.diffEqual andText:"acx")]
 //   XCTAssertEqual(expectedResult, diffs, "Slide edit left recursive.")
 //
 //   // Slide edit right recursive.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"x"), [Diff diffWithOperation:OperationDiffDelete andText:"ca"), [Diff diffWithOperation:OperationDiffEqual andText:"c"), [Diff diffWithOperation:OperationDiffDelete andText:"b"), [Diff diffWithOperation:OperationDiffEqual andText:"a")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"x"), Diff.diff(operation:.diffDelete andText:"ca"), Diff.diff(operation:.diffEqual andText:"c"), Diff.diff(operation:.diffDelete andText:"b"), Diff.diff(operation:.diffEqual andText:"a")]
 //   [dmp diff_cleanupMerge:diffs];
-//   expectedResult = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"xca"), [Diff diffWithOperation:OperationDiffDelete andText:"cba")]
+//   expectedResult = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"xca"), Diff.diff(operation:.diffDelete andText:"cba")]
 //   XCTAssertEqual(expectedResult, diffs, "Slide edit right recursive.")
 //
 //   [dmp release];
@@ -281,84 +278,84 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Blank lines.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"AAA\r\n\r\nBBB"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"\r\nDDD\r\n\r\nBBB"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"\r\nEEE")]
+//       Diff.diff(operation:.diffEqual andText:"AAA\r\n\r\nBBB"),
+//       Diff.diff(operation:.diffInsert andText:"\r\nDDD\r\n\r\nBBB"),
+//       Diff.diff(operation:.diffEqual andText:"\r\nEEE")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"AAA\r\n\r\n"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"BBB\r\nDDD\r\n\r\n"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"BBB\r\nEEE")]
+//       Diff.diff(operation:.diffEqual andText:"AAA\r\n\r\n"),
+//       Diff.diff(operation:.diffInsert andText:"BBB\r\nDDD\r\n\r\n"),
+//       Diff.diff(operation:.diffEqual andText:"BBB\r\nEEE")]
 //   XCTAssertEqual(expectedResult, diffs, "Blank lines.")
 //
 //   // Line boundaries.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"AAA\r\nBBB"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:" DDD\r\nBBB"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" EEE")]
+//       Diff.diff(operation:.diffEqual andText:"AAA\r\nBBB"),
+//       Diff.diff(operation:.diffInsert andText:" DDD\r\nBBB"),
+//       Diff.diff(operation:.diffEqual andText:" EEE")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"AAA\r\n"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"BBB DDD\r\n"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"BBB EEE")]
+//       Diff.diff(operation:.diffEqual andText:"AAA\r\n"),
+//       Diff.diff(operation:.diffInsert andText:"BBB DDD\r\n"),
+//       Diff.diff(operation:.diffEqual andText:"BBB EEE")]
 //   XCTAssertEqual(expectedResult, diffs, "Line boundaries.")
 //
 //   // Word boundaries.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The c"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ow and the c"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"at.")]
+//       Diff.diff(operation:.diffEqual andText:"The c"),
+//       Diff.diff(operation:.diffInsert andText:"ow and the c"),
+//       Diff.diff(operation:.diffEqual andText:"at.")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The "),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"cow and the "),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"cat.")]
+//       Diff.diff(operation:.diffEqual andText:"The "),
+//       Diff.diff(operation:.diffInsert andText:"cow and the "),
+//       Diff.diff(operation:.diffEqual andText:"cat.")]
 //   XCTAssertEqual(expectedResult, diffs, "Word boundaries.")
 //
 //   // Alphanumeric boundaries.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The-c"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ow-and-the-c"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"at.")]
+//       Diff.diff(operation:.diffEqual andText:"The-c"),
+//       Diff.diff(operation:.diffInsert andText:"ow-and-the-c"),
+//       Diff.diff(operation:.diffEqual andText:"at.")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The-"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"cow-and-the-"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"cat.")]
+//       Diff.diff(operation:.diffEqual andText:"The-"),
+//       Diff.diff(operation:.diffInsert andText:"cow-and-the-"),
+//       Diff.diff(operation:.diffEqual andText:"cat.")]
 //   XCTAssertEqual(expectedResult, diffs, "Alphanumeric boundaries.")
 //
 //   // Hitting the start.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"a"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"ax")]
+//       Diff.diff(operation:.diffEqual andText:"a"),
+//       Diff.diff(operation:.diffDelete andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:"ax")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"aax")]
+//       Diff.diff(operation:.diffDelete andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:"aax")]
 //   XCTAssertEqual(expectedResult, diffs, "Hitting the start.")
 //
 //   // Hitting the end.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xa"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"a")]
+//       Diff.diff(operation:.diffEqual andText:"xa"),
+//       Diff.diff(operation:.diffDelete andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:"a")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xaa"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a")]
+//       Diff.diff(operation:.diffEqual andText:"xaa"),
+//       Diff.diff(operation:.diffDelete andText:"a")]
 //   XCTAssertEqual(expectedResult, diffs, "Hitting the end.")
 //
 //   // Alphanumeric boundaries.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The xxx. The "),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"zzz. The "),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"yyy.")]
+//       Diff.diff(operation:.diffEqual andText:"The xxx. The "),
+//       Diff.diff(operation:.diffInsert andText:"zzz. The "),
+//       Diff.diff(operation:.diffEqual andText:"yyy.")]
 //   [dmp diff_cleanupSemanticLossless:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The xxx."),
-//       [Diff diffWithOperation:OperationDiffInsert andText:" The zzz."),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" The yyy.")]
+//       Diff.diff(operation:.diffEqual andText:"The xxx."),
+//       Diff.diff(operation:.diffInsert andText:" The zzz."),
+//       Diff.diff(operation:.diffEqual andText:" The yyy.")]
 //   XCTAssertEqual(expectedResult, diffs, "Sentence boundaries.")
 //
 //   [dmp release];
@@ -376,133 +373,133 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // No elimination #1.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"12"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"e")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"cd"),
+//       Diff.diff(operation:.diffEqual andText:"12"),
+//       Diff.diff(operation:.diffDelete andText:"e")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"12"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"e")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"cd"),
+//       Diff.diff(operation:.diffEqual andText:"12"),
+//       Diff.diff(operation:.diffDelete andText:"e")]
 //   XCTAssertEqual(expectedResult, diffs, "No elimination #1.")
 //
 //   // No elimination #2.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ABC"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"1234"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"wxyz")]
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffInsert andText:"ABC"),
+//       Diff.diff(operation:.diffEqual andText:"1234"),
+//       Diff.diff(operation:.diffDelete andText:"wxyz")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ABC"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"1234"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"wxyz")]
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffInsert andText:"ABC"),
+//       Diff.diff(operation:.diffEqual andText:"1234"),
+//       Diff.diff(operation:.diffDelete andText:"wxyz")]
 //   XCTAssertEqual(expectedResult, diffs, "No elimination #2.")
 //
 //   // Simple elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"b"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"c")]
+//       Diff.diff(operation:.diffDelete andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:"b"),
+//       Diff.diff(operation:.diffDelete andText:"c")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"b")]
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffInsert andText:"b")]
 //   XCTAssertEqual(expectedResult, diffs, "Simple elimination.")
 //
 //   // Backpass elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"e"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"f"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"g")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffEqual andText:"cd"),
+//       Diff.diff(operation:.diffDelete andText:"e"),
+//       Diff.diff(operation:.diffEqual andText:"f"),
+//       Diff.diff(operation:.diffInsert andText:"g")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcdef"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"cdfg")]
+//       Diff.diff(operation:.diffDelete andText:"abcdef"),
+//       Diff.diff(operation:.diffInsert andText:"cdfg")]
 //   XCTAssertEqual(expectedResult, diffs, "Backpass elimination.")
 //
 //   // Multiple eliminations.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"A"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"B"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"2"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"_"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"A"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"B"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"2")]
+//       Diff.diff(operation:.diffInsert andText:"1"),
+//       Diff.diff(operation:.diffEqual andText:"A"),
+//       Diff.diff(operation:.diffDelete andText:"B"),
+//       Diff.diff(operation:.diffInsert andText:"2"),
+//       Diff.diff(operation:.diffEqual andText:"_"),
+//       Diff.diff(operation:.diffInsert andText:"1"),
+//       Diff.diff(operation:.diffEqual andText:"A"),
+//       Diff.diff(operation:.diffDelete andText:"B"),
+//       Diff.diff(operation:.diffInsert andText:"2")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"AB_AB"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1A2_1A2")]
+//       Diff.diff(operation:.diffDelete andText:"AB_AB"),
+//       Diff.diff(operation:.diffInsert andText:"1A2_1A2")]
 //   XCTAssertEqual(expectedResult, diffs, "Multiple eliminations.")
 //
 //   // Word boundaries.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The c"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ow and the c"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"at.")]
+//       Diff.diff(operation:.diffEqual andText:"The c"),
+//       Diff.diff(operation:.diffDelete andText:"ow and the c"),
+//       Diff.diff(operation:.diffEqual andText:"at.")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"The "),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cow and the "),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"cat.")]
+//       Diff.diff(operation:.diffEqual andText:"The "),
+//       Diff.diff(operation:.diffDelete andText:"cow and the "),
+//       Diff.diff(operation:.diffEqual andText:"cat.")]
 //   XCTAssertEqual(expectedResult, diffs, "Word boundaries.")
 //
 //   // No overlap elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcxx"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"xxdef")]
+//       Diff.diff(operation:.diffDelete andText:"abcxx"),
+//       Diff.diff(operation:.diffInsert andText:"xxdef")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcxx"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"xxdef")]
+//       Diff.diff(operation:.diffDelete andText:"abcxx"),
+//       Diff.diff(operation:.diffInsert andText:"xxdef")]
 //   XCTAssertEqual(expectedResult, diffs, "No overlap elimination.")
 //
 //   // Overlap elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcxxx"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"xxxdef")]
+//       Diff.diff(operation:.diffDelete andText:"abcxxx"),
+//       Diff.diff(operation:.diffInsert andText:"xxxdef")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xxx"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"def")]
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffEqual andText:"xxx"),
+//       Diff.diff(operation:.diffInsert andText:"def")]
 //   XCTAssertEqual(expectedResult, diffs, "Overlap elimination.")
 //
 //   // Reverse overlap elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"xxxabc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"defxxx")]
+//       Diff.diff(operation:.diffDelete andText:"xxxabc"),
+//       Diff.diff(operation:.diffInsert andText:"defxxx")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffInsert andText:"def"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xxx"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc")]
+//       Diff.diff(operation:.diffInsert andText:"def"),
+//       Diff.diff(operation:.diffEqual andText:"xxx"),
+//       Diff.diff(operation:.diffDelete andText:"abc")]
 //   XCTAssertEqual(expectedResult, diffs, "Reverse overlap elimination.")
 //
 //   // Two overlap eliminations.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcd1212"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1212efghi"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"----"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"A3"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"3BC")]
+//       Diff.diff(operation:.diffDelete andText:"abcd1212"),
+//       Diff.diff(operation:.diffInsert andText:"1212efghi"),
+//       Diff.diff(operation:.diffEqual andText:"----"),
+//       Diff.diff(operation:.diffDelete andText:"A3"),
+//       Diff.diff(operation:.diffInsert andText:"3BC")]
 //   [dmp diff_cleanupSemantic:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abcd"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"1212"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"efghi"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"----"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"A"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"3"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"BC")]
+//       Diff.diff(operation:.diffDelete andText:"abcd"),
+//       Diff.diff(operation:.diffEqual andText:"1212"),
+//       Diff.diff(operation:.diffInsert andText:"efghi"),
+//       Diff.diff(operation:.diffEqual andText:"----"),
+//       Diff.diff(operation:.diffDelete andText:"A"),
+//       Diff.diff(operation:.diffEqual andText:"3"),
+//       Diff.diff(operation:.diffInsert andText:"BC")]
 //   XCTAssertEqual(expectedResult, diffs, "Two overlap eliminations.")
 //
 //   [dmp release];
@@ -521,72 +518,72 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // No elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"wxyz"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"wxyz"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"34")]
 //   [dmp diff_cleanupEfficiency:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"wxyz"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"wxyz"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"34")]
 //   XCTAssertEqual(expectedResult, diffs, "No elimination.")
 //
 //   // Four-edit elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"xyz"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"34")]
 //   [dmp diff_cleanupEfficiency:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abxyzcd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12xyz34")]
+//       Diff.diff(operation:.diffDelete andText:"abxyzcd"),
+//       Diff.diff(operation:.diffInsert andText:"12xyz34")]
 //   XCTAssertEqual(expectedResult, diffs, "Four-edit elimination.")
 //
 //   // Three-edit elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"x"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34")]
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"x"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"34")]
 //   [dmp diff_cleanupEfficiency:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"xcd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12x34")]
+//       Diff.diff(operation:.diffDelete andText:"xcd"),
+//       Diff.diff(operation:.diffInsert andText:"12x34")]
 //   XCTAssertEqual(expectedResult, diffs, "Three-edit elimination.")
 //
 //   // Backpass elimination.
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xy"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"z"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"56")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"xy"),
+//       Diff.diff(operation:.diffInsert andText:"34"),
+//       Diff.diff(operation:.diffEqual andText:"z"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"56")]
 //   [dmp diff_cleanupEfficiency:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abxyzcd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12xy34z56")]
+//       Diff.diff(operation:.diffDelete andText:"abxyzcd"),
+//       Diff.diff(operation:.diffInsert andText:"12xy34z56")]
 //   XCTAssertEqual(expectedResult, diffs, "Backpass elimination.")
 //
 //   // High cost elimination.
 //   dmp.Diff_EditCost = 5;
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"ab"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"wxyz"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"cd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"34")]
+//       Diff.diff(operation:.diffDelete andText:"ab"),
+//       Diff.diff(operation:.diffInsert andText:"12"),
+//       Diff.diff(operation:.diffEqual andText:"wxyz"),
+//       Diff.diff(operation:.diffDelete andText:"cd"),
+//       Diff.diff(operation:.diffInsert andText:"34")]
 //   [dmp diff_cleanupEfficiency:diffs];
 //   expectedResult = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abwxyzcd"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"12wxyz34")]
+//       Diff.diff(operation:.diffDelete andText:"abwxyzcd"),
+//       Diff.diff(operation:.diffInsert andText:"12wxyz34")]
 //   XCTAssertEqual(expectedResult, diffs, "High cost elimination.")
 //   dmp.Diff_EditCost = 4;
 //
@@ -598,9 +595,9 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Pretty print.
 //   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"a\n"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"<B>b</B>"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"c&d")]
+//       Diff.diff(operation:.diffEqual andText:"a\n"),
+//       Diff.diff(operation:.diffDelete andText:"<B>b</B>"),
+//       Diff.diff(operation:.diffInsert andText:"c&d")]
 //   NSString *expectedResult = "<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>";
 //   XCTAssertEqual(expectedResult, [dmp diff_prettyHtml:diffs], "Pretty print.")
 //
@@ -612,13 +609,13 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Compute the source and destination texts.
 //   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"jump"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"s"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ed"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" over "),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"the"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" lazy")]
+//       Diff.diff(operation:.diffEqual andText:"jump"),
+//       Diff.diff(operation:.diffDelete andText:"s"),
+//       Diff.diff(operation:.diffInsert andText:"ed"),
+//       Diff.diff(operation:.diffEqual andText:" over "),
+//       Diff.diff(operation:.diffDelete andText:"the"),
+//       Diff.diff(operation:.diffInsert andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:" lazy")]
 //   XCTAssertEqual("jumps over the lazy", [dmp diff_text1:diffs], "Compute the source and destination texts #1")
 //
 //   XCTAssertEqual("jumped over a lazy", [dmp diff_text2:diffs], "Compute the source and destination texts #2")
@@ -633,14 +630,14 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Convert a diff into delta string.
 //   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"jump"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"s"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ed"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" over "),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"the"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" lazy"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"old dog")]
+//       Diff.diff(operation:.diffEqual andText:"jump"),
+//       Diff.diff(operation:.diffDelete andText:"s"),
+//       Diff.diff(operation:.diffInsert andText:"ed"),
+//       Diff.diff(operation:.diffEqual andText:" over "),
+//       Diff.diff(operation:.diffDelete andText:"the"),
+//       Diff.diff(operation:.diffInsert andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:" lazy"),
+//       Diff.diff(operation:.diffInsert andText:"old dog")]
 //   NSString *text1 = [dmp diff_text1:diffs];
 //   XCTAssertEqual("jumps over the lazy", text1, "Convert a diff into delta string 1.")
 //
@@ -676,9 +673,9 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   unichar one = (unichar)1;
 //   unichar two = (unichar)2;
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:[NSString stringWithFormat:"\U00000680 %C \t %%", zero]],
-//       [Diff diffWithOperation:OperationDiffDelete andText:[NSString stringWithFormat:"\U00000681 %C \n ^", one]],
-//       [Diff diffWithOperation:OperationDiffInsert andText:[NSString stringWithFormat:"\U00000682 %C \\ |", two]]]
+//       Diff.diff(operation:.diffEqual andText:[NSString stringWithFormat:"\U00000680 %C \t %%", zero]],
+//       Diff.diff(operation:.diffDelete andText:[NSString stringWithFormat:"\U00000681 %C \n ^", one]],
+//       Diff.diff(operation:.diffInsert andText:[NSString stringWithFormat:"\U00000682 %C \\ |", two]]]
 //   text1 = [dmp diff_text1:diffs];
 //   NSString *expectedString = [NSString stringWithFormat:"\U00000680 %C \t %%\U00000681 %C \n ^", zero, one];
 //   XCTAssertEqual(expectedString, text1, "Test deltas with special characters.")
@@ -691,7 +688,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Verify pool of unchanged characters.
 //   diffs = [NSMutableArray arrayWithObject:
-//        [Diff diffWithOperation:OperationDiffInsert andText:"A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # "]];
+//        Diff.diff(operation:.diffInsert andText:"A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # "]];
 //   NSString *text2 = [dmp diff_text2:diffs];
 //   XCTAssertEqual("A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ", text2, "diff_text2: Unchanged characters 1.")
 //
@@ -710,15 +707,15 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 //   // Translate a location in text1 to text2.
 //   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"a"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1234"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"), nil] /* Diff */;
+//       Diff.diff(operation:.diffDelete andText:"a"),
+//       Diff.diff(operation:.diffInsert andText:"1234"),
+//       Diff.diff(operation:.diffEqual andText:"xyz"), nil] /* Diff */;
 //   XCTAssertEqual(5, [dmp diff_xIndexIn:diffs location:2], "diff_xIndex: Translation on equality. Translate a location in text1 to text2.")
 //
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"a"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"1234"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"), nil] /* Diff */;
+//       Diff.diff(operation:.diffEqual andText:"a"),
+//       Diff.diff(operation:.diffDelete andText:"1234"),
+//       Diff.diff(operation:.diffEqual andText:"xyz"), nil] /* Diff */;
 //   XCTAssertEqual(1, [dmp diff_xIndexIn:diffs location:3], "diff_xIndex: Translation on deletion.")
 //
 //   [dmp release];
@@ -728,21 +725,21 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   let dmp = DiffMatchPatch()
 //
 //   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1234"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"), nil] /* Diff */;
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffInsert andText:"1234"),
+//       Diff.diff(operation:.diffEqual andText:"xyz"), nil] /* Diff */;
 //   XCTAssertEqual(4, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with trailing equality.")
 //
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1234"), nil] /* Diff */;
+//       Diff.diff(operation:.diffEqual andText:"xyz"),
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffInsert andText:"1234"), nil] /* Diff */;
 //   XCTAssertEqual(4, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with leading equality.")
 //
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"abc"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"xyz"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"1234"), nil] /* Diff */;
+//       Diff.diff(operation:.diffDelete andText:"abc"),
+//       Diff.diff(operation:.diffEqual andText:"xyz"),
+//       Diff.diff(operation:.diffInsert andText:"1234"), nil] /* Diff */;
 //   XCTAssertEqual(7, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with middle equality.")
 //
 //   [dmp release];
@@ -758,11 +755,11 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   // Since the resulting diff hasn't been normalized, it would be ok if
 //   // the insertion and deletion pairs are swapped.
 //   // If the order changes, tweak this test as required.
-//   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"c"), [Diff diffWithOperation:OperationDiffInsert andText:"m"), [Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"t"), [Diff diffWithOperation:OperationDiffInsert andText:"p")]
+//   NSMutableArray *diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"c"), Diff.diff(operation:.diffInsert andText:"m"), Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"t"), Diff.diff(operation:.diffInsert andText:"p")]
 //   XCTAssertEqual(diffs, [dmp diff_bisectOfOldString:a andNewString:b deadline:[[NSDate distantFuture] timeIntervalSinceReferenceDate]], "Bisect test.")
 //
 //   // Timeout.
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"cat"), [Diff diffWithOperation:OperationDiffInsert andText:"map")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"cat"), Diff.diff(operation:.diffInsert andText:"map")]
 //   XCTAssertEqual(diffs, [dmp diff_bisectOfOldString:a andNewString:b deadline:[[NSDate distantPast] timeIntervalSinceReferenceDate]], "Bisect timeout.")
 //
 //   [dmp release];
@@ -775,44 +772,44 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   NSMutableArray *diffs = [NSMutableArray array];
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"", andNewString:"" checkLines:NO], "diff_main: Null case.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"abc")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"abc")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"abc" checkLines:NO], "diff_main: Equality.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"ab"), [Diff diffWithOperation:OperationDiffInsert andText:"123"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"ab"), Diff.diff(operation:.diffInsert andText:"123"), Diff.diff(operation:.diffEqual andText:"c")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"ab123c" checkLines:NO], "diff_main: Simple insertion.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"123"), [Diff diffWithOperation:OperationDiffEqual andText:"bc")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"123"), Diff.diff(operation:.diffEqual andText:"bc")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a123bc", andNewString:"abc" checkLines:NO], "diff_main: Simple deletion.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"123"), [Diff diffWithOperation:OperationDiffEqual andText:"b"), [Diff diffWithOperation:OperationDiffInsert andText:"456"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffInsert andText:"123"), Diff.diff(operation:.diffEqual andText:"b"), Diff.diff(operation:.diffInsert andText:"456"), Diff.diff(operation:.diffEqual andText:"c")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"a123b456c" checkLines:NO], "diff_main: Two insertions.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"123"), [Diff diffWithOperation:OperationDiffEqual andText:"b"), [Diff diffWithOperation:OperationDiffDelete andText:"456"), [Diff diffWithOperation:OperationDiffEqual andText:"c")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"123"), Diff.diff(operation:.diffEqual andText:"b"), Diff.diff(operation:.diffDelete andText:"456"), Diff.diff(operation:.diffEqual andText:"c")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a123b456c", andNewString:"abc" checkLines:NO], "diff_main: Two deletions.")
 //
 //   // Perform a real diff.
 //   // Switch off the timeout.
 //   dmp.Diff_Timeout = 0;
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"b")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffInsert andText:"b")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a", andNewString:"b" checkLines:NO], "diff_main: Simple case #1.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"Apple"), [Diff diffWithOperation:OperationDiffInsert andText:"Banana"), [Diff diffWithOperation:OperationDiffEqual andText:"s are a"), [Diff diffWithOperation:OperationDiffInsert andText:"lso"), [Diff diffWithOperation:OperationDiffEqual andText:" fruit.")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"Apple"), Diff.diff(operation:.diffInsert andText:"Banana"), Diff.diff(operation:.diffEqual andText:"s are a"), Diff.diff(operation:.diffInsert andText:"lso"), Diff.diff(operation:.diffEqual andText:" fruit.")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"Apples are a fruit.", andNewString:"Bananas are also fruit." checkLines:NO], "diff_main: Simple case #2.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"\U00000680"), [Diff diffWithOperation:OperationDiffEqual andText:"x"), [Diff diffWithOperation:OperationDiffDelete andText:"\t"), [Diff diffWithOperation:OperationDiffInsert andText:[NSString stringWithFormat:"%C", 0]]]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"a"), Diff.diff(operation:.diffInsert andText:"\U00000680"), Diff.diff(operation:.diffEqual andText:"x"), Diff.diff(operation:.diffDelete andText:"\t"), Diff.diff(operation:.diffInsert andText:[NSString stringWithFormat:"%C", 0]]]
 //   NSString *aString = [NSString stringWithFormat:"\U00000680x%C", 0];
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"ax\t", andNewString:aString checkLines:NO], "diff_main: Simple case #3.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"1"), [Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"y"), [Diff diffWithOperation:OperationDiffEqual andText:"b"), [Diff diffWithOperation:OperationDiffDelete andText:"2"), [Diff diffWithOperation:OperationDiffInsert andText:"xab")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"1"), Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"y"), Diff.diff(operation:.diffEqual andText:"b"), Diff.diff(operation:.diffDelete andText:"2"), Diff.diff(operation:.diffInsert andText:"xab")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"1ayb2", andNewString:"abxab" checkLines:NO], "diff_main: Overlap #1.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffInsert andText:"xaxcx"), [Diff diffWithOperation:OperationDiffEqual andText:"abc"), [Diff diffWithOperation:OperationDiffDelete andText:"y")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffInsert andText:"xaxcx"), Diff.diff(operation:.diffEqual andText:"abc"), Diff.diff(operation:.diffDelete andText:"y")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abcy", andNewString:"xaxcxabc" checkLines:NO], "diff_main: Overlap #2.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffDelete andText:"ABCD"), [Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffDelete andText:"="), [Diff diffWithOperation:OperationDiffInsert andText:"-"), [Diff diffWithOperation:OperationDiffEqual andText:"bcd"), [Diff diffWithOperation:OperationDiffDelete andText:"="), [Diff diffWithOperation:OperationDiffInsert andText:"-"), [Diff diffWithOperation:OperationDiffEqual andText:"efghijklmnopqrs"), [Diff diffWithOperation:OperationDiffDelete andText:"EFGHIJKLMNOefg")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffDelete andText:"ABCD"), Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffDelete andText:"="), Diff.diff(operation:.diffInsert andText:"-"), Diff.diff(operation:.diffEqual andText:"bcd"), Diff.diff(operation:.diffDelete andText:"="), Diff.diff(operation:.diffInsert andText:"-"), Diff.diff(operation:.diffEqual andText:"efghijklmnopqrs"), Diff.diff(operation:.diffDelete andText:"EFGHIJKLMNOefg")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"ABCDa=bcd=efghijklmnopqrsEFGHIJKLMNOefg", andNewString:"a-bcd-efghijklmnopqrs" checkLines:NO], "diff_main: Overlap #3.")
 //
-//   diffs = [NSMutableArray arrayWithObjects:[Diff diffWithOperation:OperationDiffInsert andText:" "), [Diff diffWithOperation:OperationDiffEqual andText:"a"), [Diff diffWithOperation:OperationDiffInsert andText:"nd"), [Diff diffWithOperation:OperationDiffEqual andText:" [[Pennsylvania]]"), [Diff diffWithOperation:OperationDiffDelete andText:", and [[New")]
+//   diffs = [NSMutableArray arrayWithObjects:Diff.diff(operation:.diffInsert andText:" "), Diff.diff(operation:.diffEqual andText:"a"), Diff.diff(operation:.diffInsert andText:"nd"), Diff.diff(operation:.diffEqual andText:" [[Pennsylvania]]"), Diff.diff(operation:.diffDelete andText:", and [[New")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a [[Pennsylvania]] and [[New", andNewString:", and [[Pennsylvania]]" checkLines:NO], "diff_main: Large equality.")
 //
 //   dmp.Diff_Timeout = 0.1f;  // 100ms
@@ -972,13 +969,13 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   p.length1 = 18;
 //   p.length2 = 17;
 //   p.diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffEqual andText:"jump"),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"s"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"ed"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:" over "),
-//       [Diff diffWithOperation:OperationDiffDelete andText:"the"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"a"),
-//       [Diff diffWithOperation:OperationDiffEqual andText:"\nlaz")]
+//       Diff.diff(operation:.diffEqual andText:"jump"),
+//       Diff.diff(operation:.diffDelete andText:"s"),
+//       Diff.diff(operation:.diffInsert andText:"ed"),
+//       Diff.diff(operation:.diffEqual andText:" over "),
+//       Diff.diff(operation:.diffDelete andText:"the"),
+//       Diff.diff(operation:.diffInsert andText:"a"),
+//       Diff.diff(operation:.diffEqual andText:"\nlaz")]
 //   NSString *strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n %0Alaz\n";
 //   XCTAssertEqual(strp, [p description], "Patch: description.")
 // }
@@ -1082,8 +1079,8 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //       "patch_toText: Character encoding.")
 //
 //   diffs = [NSMutableArray arrayWithObjects:
-//       [Diff diffWithOperation:OperationDiffDelete andText:"`1234567890-=[]\\;',./"),
-//       [Diff diffWithOperation:OperationDiffInsert andText:"~!@#$%^&*()_+{}|:\"<>?")]
+//       Diff.diff(operation:.diffDelete andText:"`1234567890-=[]\\;',./"),
+//       Diff.diff(operation:.diffInsert andText:"~!@#$%^&*()_+{}|:\"<>?")]
 //   XCTAssertEqual(diffs,
 //       ((Patch *)[[dmp patch_fromText:"@@ -1,21 +1,21 @@\n-%601234567890-=%5B%5D%5C;',./\n+~!@#$%25%5E&*()_+%7B%7D%7C:%22%3C%3E?\n" error:NULL] objectAtIndex:0]).diffs,
 //       "patch_fromText: Character decoding.")
@@ -1257,19 +1254,19 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //
 // - (void)test_diff_nscoding {
 //     Diff *orig = [Diff new];
-//     orig.operation = OperationDiffEqual;
+//     orig.operation = .diffEqual;
 //     orig.text = @"foo";
 //     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:orig];
 //     XCTAssertNotNil(data);
 //     Diff *res = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 //     XCTAssertNotNil(res);
-//     XCTAssertEqual(res.operation, OperationDiffEqual);
+//     XCTAssertEqual(res.operation, .diffEqual);
 //     XCTAssertEqual(res.text, @"foo");
 // }
 //
 // - (void)test_patch_nscoding {
 //     Diff *diff = [Diff new];
-//     diff.operation = OperationDiffEqual;
+//     diff.operation = .diffEqual;
 //     diff.text = @"foo";
 //
 //     Patch *orig = [Patch new];
@@ -1285,7 +1282,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //     XCTAssertNotNil(res);
 //
 //     XCTAssertEqual(res.diffs.count, 1ul);
-//     XCTAssertEqual(res.diffs[0].operation, OperationDiffEqual);
+//     XCTAssertEqual(res.diffs[0].operation, .diffEqual);
 //     XCTAssertEqual(res.diffs[0].text, @"foo");
 //     XCTAssertEqual(res.start1, 1ul);
 //     XCTAssertEqual(res.start2, 2ul);
@@ -1301,10 +1298,10 @@ class InternalDiffMatchPatchTests: XCTestCase {
 // {
 //   NSArray *text = [NSMutableArray arrayWithObjects:[NSMutableString string], [NSMutableString string]]
 //   for (Diff *myDiff in diffs) {
-//     if (myDiff.operation != OperationDiffInsert) {
+//     if (myDiff.operation != .diffInsert) {
 //       [[text objectAtIndex:0] appendString:myDiff.text];
 //     }
-//     if (myDiff.operation != OperationDiffDelete) {
+//     if (myDiff.operation != .diffDelete) {
 //       [[text objectAtIndex:1] appendString:myDiff.text];
 //     }
 //   }
@@ -1312,3 +1309,5 @@ class InternalDiffMatchPatchTests: XCTestCase {
 // }
 //
 // @end
+
+}
