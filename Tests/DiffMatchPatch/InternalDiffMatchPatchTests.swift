@@ -64,15 +64,14 @@ class InternalDiffMatchPatchTests: XCTestCase {
     func test_diff_halfmatch() {
         let dmp = DiffMatchPatch()
         dmp.diff_Timeout = 1
-        var expectedResult = [String]()
 
         // No match.
-        XCTAssertNil(dmp.diff_halfMatch(ofFirstString: "1234567890", andSecondString:"abcdef"), "No match #1.")
+        XCTAssertEqual(dmp.diff_halfMatch(ofFirstString: "1234567890", andSecondString:"abcdef").count, 0, "No match #1.")
 
-        XCTAssertNil(dmp.diff_halfMatch(ofFirstString: "12345", andSecondString:"23"), "No match #2.")
+        XCTAssertEqual(dmp.diff_halfMatch(ofFirstString: "12345", andSecondString:"23").count, 0, "No match #2.")
 
         // Single Match.
-        expectedResult = ["12", "90", "a", "z", "345678"]
+        var expectedResult = ["12", "90", "a", "z", "345678"]
         XCTAssertEqual(expectedResult, dmp.diff_halfMatch(ofFirstString: "1234567890", andSecondString:"a345678z") as! [String], "Single Match #1.")
 
         expectedResult = ["a", "z", "12", "90", "345678"]
@@ -101,7 +100,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 
         // Optimal no halfmatch.
         dmp.diff_Timeout = 0
-        XCTAssertNil(dmp.diff_halfMatch(ofFirstString: "qHilloHelloHew", andSecondString:"xHelloHeHulloy"), "Optimal no halfmatch.")
+        XCTAssertEqual(dmp.diff_halfMatch(ofFirstString: "qHilloHelloHew", andSecondString:"xHelloHeHulloy").count, 0, "Optimal no halfmatch.")
     }
 
 
