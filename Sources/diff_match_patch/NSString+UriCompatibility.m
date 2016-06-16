@@ -34,13 +34,9 @@
  */
 - (NSString *)diff_stringByAddingPercentEscapesForEncodeUriCompatibility;
 {
-  CFStringRef urlString = CFURLCreateStringByAddingPercentEscapes(NULL,
-                                  (CFStringRef)self,
-                                  CFSTR(" !~*'();/?:@&=+$,#"),
-                                  NULL,
-                                  kCFStringEncodingUTF8);
-  CFMakeCollectable(urlString);
-  return [(NSString *)urlString autorelease];
+    NSMutableCharacterSet *charset = [NSMutableCharacterSet characterSetWithCharactersInString:@" !~*'();/?:@&=+$,#"];
+    [charset formUnionWithCharacterSet: [NSCharacterSet URLQueryAllowedCharacterSet]];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters: charset];
 }
 
 /**
@@ -52,12 +48,7 @@
  */
 - (NSString *)diff_stringByReplacingPercentEscapesForEncodeUriCompatibility;
 {
-  CFStringRef decodedString = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, 
-                                            (CFStringRef)self, 
-                                            CFSTR(""), 
-                                            kCFStringEncodingUTF8);
-  CFMakeCollectable(decodedString);
-  return [(NSString *)decodedString autorelease];
+    return self.stringByRemovingPercentEncoding;
 }
 
 @end

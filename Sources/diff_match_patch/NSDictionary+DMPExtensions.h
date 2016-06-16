@@ -18,21 +18,21 @@
  *
  * Author: fraser@google.com (Neil Fraser)
  * ObjC port: jan@geheimwerk.de (Jan Weiß)
+ * ObjC ARC port: Nick Ager
  */
 
-#import "NSString+UnicharUtilities.h"
+#import <Foundation/Foundation.h>
 
+@interface NSDictionary (DMPExtensions)
+- (id)diff_objectForIntegerKey:(NSInteger)keyInteger;
+- (id)diff_objectForUnsignedIntegerKey:(NSUInteger)keyUInteger;
+- (id)diff_objectForUnicharKey:(unichar)aUnicharKey;
 
-@implementation NSString (UnicharUtilities)
+- (NSInteger)diff_integerForKey:(id)aKey;
+- (NSUInteger)diff_unsignedIntegerForKey:(id)aKey;
+- (NSInteger)diff_integerForIntegerKey:(NSInteger)keyInteger;
+- (NSUInteger)diff_unsignedIntegerForUnicharKey:(unichar)aUnicharKey;
 
-+ (NSString *)diff_stringFromUnichar:(unichar)ch;
-{
-    return [[NSString alloc] initWithCharacters:&ch length: 1];
-}
-
-- (NSString *)diff_substringWithCharacterAtIndex:(NSUInteger)anIndex;
-{
-  return [self substringWithRange:NSMakeRange(anIndex, 1)];
-}
-
+- (BOOL)diff_containsObjectForKey:(id)aKey;
+- (BOOL)diff_containsObjectForUnicharKey:(unichar)aUnicharKey;
 @end
