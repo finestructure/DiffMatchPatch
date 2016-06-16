@@ -8,7 +8,7 @@ import XCTest
 
 class InternalDiffMatchPatchTests: XCTestCase {
 
-    func test_diff_commonPrefixTest() {
+    func test_diff_commonPrefix() {
         let dmp = DiffMatchPatch()
 
         // Detect any common suffix.
@@ -23,7 +23,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
     }
 
 
-    func test_diff_commonSuffixTest() {
+    func test_diff_commonSuffix() {
         let dmp = DiffMatchPatch()
 
         // Detect any common suffix.
@@ -150,42 +150,40 @@ class InternalDiffMatchPatchTests: XCTestCase {
     }
 
 
-func test_diff_charsToLines() {
-    // TODO: WIP, interrupted by having to update DMP sources from aerogear master
-    // let dmp = DiffMatchPatch()
-    //
-    // // Convert chars up to lines.
-    // let diffs = [
-        //     Diff.diff(with:.diffEqual, andText:"\u{01}\u{02}\u{01}")!,
-        //     Diff.diff(with:.diffInsert, andText:"\u{02}\u{01}\u{02}")!
-        // ]
-        // var tmpVector = ["", "alpha\n", "beta\n"]
-        // dmp.diff_chars(diffs, toLines:tmpVector)
-        // let expectedResult = [
-            //     Diff.diff(with:.diffEqual, andText:"alpha\nbeta\nalpha\n"),
-            //     Diff.diff(with:.diffInsert, andText:"beta\nalpha\nbeta\n")
-            // ]
-            // XCTAssertEqual(expectedResult, diffs, "Shared lines.")
+    func test_diff_charsToLines() {
+        let dmp = DiffMatchPatch()
 
-  // // More than 256 to reveal any 8-bit limitations.
-  // unichar n = 300;
-  // [tmpVector removeAllObjects];
-  // NSMutableString *lines = [NSMutableString string];
-  // NSMutableString *chars = [NSMutableString string];
-  // NSString *currentLine;
-  // for (unichar x = 1; x < n + 1; x++) {
-  //   currentLine = [NSString stringWithFormat:"%d\n", (int)x];
-  //   [tmpVector addObject:currentLine];
-  //   [lines appendString:currentLine];
-  //   [chars appendString:[NSString stringWithFormat:"%C", x]];
-  // }
-  // XCTAssertEqual(n, tmpVector.count, "More than 256 #1.")
-  // XCTAssertEqual(n, chars.length, "More than 256 #2.")
-  // [tmpVector insertObject:"" atIndex:0];
-  // diffs = [NSArray arrayWithObject:Diff.diff(operation:.diffDelete andText:chars]];
-  // [dmp diff_chars:diffs toLines:tmpVector];
-  // XCTAssertEqual([NSArray arrayWithObject:Diff.diff(operation:.diffDelete andText:lines]], diffs, "More than 256 #3.")
-}
+        // Convert chars up to lines.
+        var diffs = [
+            Diff(operation: .diffEqual, andText: "\u{01}\u{02}\u{01}"),
+            Diff(operation: .diffInsert, andText: "\u{02}\u{01}\u{02}")
+        ]
+        var tmpVector = ["", "alpha\n", "beta\n"]
+        dmp.diff_chars(diffs, toLines: tmpVector)
+        let expectedResult = [
+            Diff(operation: .diffEqual, andText: "alpha\nbeta\nalpha\n"),
+            Diff(operation: .diffInsert, andText: "beta\nalpha\nbeta\n")
+        ]
+        XCTAssertEqual(expectedResult, diffs, "Shared lines.")
+
+        // More than 256 to reveal any 8-bit limitations.
+        let n = 300
+        tmpVector = []
+        var lines = ""
+        var chars = ""
+        for x in 1...n {
+            let currentLine = String(format: "%d\n", x)
+            tmpVector.append(currentLine)
+            lines += currentLine
+            chars += String(format: "%C", x)
+        }    
+        XCTAssertEqual(n, tmpVector.count, "More than 256 #1.")
+        XCTAssertEqual(n, chars.characters.count, "More than 256 #2.")
+        tmpVector.insert("", at: 0)
+        diffs = [Diff(operation: .diffDelete, andText: chars)]
+        dmp.diff_chars(diffs, toLines: tmpVector)
+        XCTAssertEqual([Diff(operation: .diffDelete, andText: lines)], diffs, "More than 256 #3.")
+    }
 
 // func test_diff_cleanupMerge() {
 //   let dmp = DiffMatchPatch()
