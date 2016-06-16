@@ -138,7 +138,7 @@ typedef NS_ENUM(NSInteger, Operation) {
 - (NSMutableArray *)diff_lineModeFromOldString:(NSString *)text1 andNewString:(NSString *)text2 deadline:(NSTimeInterval)deadline;
 - (NSArray *)diff_linesToCharsForFirstString:(NSString *)text1 andSecondString:(NSString *)text1;
 - (NSString *)diff_linesToCharsMungeOfText:(NSString *)text lineArray:(NSMutableArray *)lineArray lineHash:(NSMutableDictionary *)lineHash;
-- (void)diff_chars:(NSArray *)diffs toLines:(NSMutableArray *)lineArray;
+- (void)diff_chars:(NSArray *)diffs toLines:(NSArray *)lineArray;
 - (NSMutableArray *)diff_bisectOfOldString:(NSString *)text1 andNewString:(NSString *)text2 deadline:(NSTimeInterval)deadline;
 - (NSMutableArray *)diff_bisectSplitOfOldString:(NSString *)text1 andNewString:(NSString *)text2 x:(NSUInteger)x y:(NSUInteger)y deadline:(NSTimeInterval)deadline;
 - (NSUInteger)diff_commonOverlapOfFirstString:(NSString *)text1 andSecondString:(NSString *)text2;

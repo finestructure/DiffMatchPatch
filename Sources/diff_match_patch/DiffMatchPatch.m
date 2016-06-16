@@ -892,9 +892,9 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
  * Rehydrate the text in a diff from an NSString of line hashes to real lines
  * of text.
  * @param NSArray of Diff objects.
- * @param NSMutableArray of unique strings.
+ * @param NSArray of unique strings.
  */
-- (void)diff_chars:(NSArray *)diffs toLines:(NSMutableArray *)lineArray
+- (void)diff_chars:(NSArray *)diffs toLines:(NSArray *)lineArray
 {
   NSMutableString *text;
   NSUInteger lineHash;
