@@ -22,7 +22,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(4, dmp.diff_commonPrefix(ofFirstString: "1234", andSecondString: "1234xyz"), "Common suffix whole case failed.")
     }
 
-
     func test_diff_commonSuffix() {
         let dmp = DiffMatchPatch()
 
@@ -36,7 +35,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         // Whole case.
         XCTAssertEqual(4, dmp.diff_commonSuffix(ofFirstString: "1234", andSecondString:"xyz1234"), "Detect any common suffix. Whole case.")
     }
-    
 
     func test_diff_commonOverlap() {
         let dmp = DiffMatchPatch()
@@ -59,7 +57,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         // component letters.  E.g. U+FB01 == 'fi'
         XCTAssertEqual(0, dmp.diff_commonOverlap(ofFirstString: "fi", andSecondString:"\u{0000fb01}i"), "Detect any suffix/prefix overlap. Unicode.")
     }
-
 
     func test_diff_halfmatch() {
         let dmp = DiffMatchPatch()
@@ -102,7 +99,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         dmp.diff_Timeout = 0
         XCTAssertEqual(dmp.diff_halfMatch(ofFirstString: "qHilloHelloHew", andSecondString:"xHelloHeHulloy").count, 0, "Optimal no halfmatch.")
     }
-
 
     func test_diff_linesToChars() {
         let dmp = DiffMatchPatch()
@@ -147,7 +143,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual("", result[1] as? String, "More than 256 #4.")
         XCTAssertEqual(tmpVector, result[2] as! [String], "More than 256 #5.")
     }
-
 
     func test_diff_charsToLines() {
         let dmp = DiffMatchPatch()
@@ -247,7 +242,6 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(expectedResult, dmp.diff_cleanupMerge(diffs), "Slide edit right recursive.")
     }
 
-
     func test_diff_cleanupSemanticLossless() {
         let dmp = DiffMatchPatch()
 
@@ -345,150 +339,155 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(expectedResult, dmp.diff_cleanupSemanticLossless(diffs), "Sentence boundaries.")
     }
 
-// func test_diff_cleanupSemantic() {
-//   let dmp = DiffMatchPatch()
-//   NSMutableArray *expectedResult = nil;
-//
-//   // Cleanup semantically trivial equalities.
-//   // Null case.
-//   NSMutableArray *diffs = [NSMutableArray array];
-//   [dmp diff_cleanupSemantic:diffs];
-//   XCTAssertEqual([NSMutableArray array], diffs, "Null case.")
-//
-//   // No elimination #1.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"cd"),
-//       Diff(operation:.diffEqual, andText:"12"),
-//       Diff(operation:.diffDelete, andText:"e")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffInsert, andText:"cd"),
-//       Diff(operation:.diffEqual, andText:"12"),
-//       Diff(operation:.diffDelete, andText:"e")]
-//   XCTAssertEqual(expectedResult, diffs, "No elimination #1.")
-//
-//   // No elimination #2.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffInsert, andText:"ABC"),
-//       Diff(operation:.diffEqual, andText:"1234"),
-//       Diff(operation:.diffDelete, andText:"wxyz")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffInsert, andText:"ABC"),
-//       Diff(operation:.diffEqual, andText:"1234"),
-//       Diff(operation:.diffDelete, andText:"wxyz")]
-//   XCTAssertEqual(expectedResult, diffs, "No elimination #2.")
-//
-//   // Simple elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"a"),
-//       Diff(operation:.diffEqual, andText:"b"),
-//       Diff(operation:.diffDelete, andText:"c")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffInsert, andText:"b")]
-//   XCTAssertEqual(expectedResult, diffs, "Simple elimination.")
-//
-//   // Backpass elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"ab"),
-//       Diff(operation:.diffEqual, andText:"cd"),
-//       Diff(operation:.diffDelete, andText:"e"),
-//       Diff(operation:.diffEqual, andText:"f"),
-//       Diff(operation:.diffInsert, andText:"g")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abcdef"),
-//       Diff(operation:.diffInsert, andText:"cdfg")]
-//   XCTAssertEqual(expectedResult, diffs, "Backpass elimination.")
-//
-//   // Multiple eliminations.
-//   diffs = [
-//       Diff(operation:.diffInsert, andText:"1"),
-//       Diff(operation:.diffEqual, andText:"A"),
-//       Diff(operation:.diffDelete, andText:"B"),
-//       Diff(operation:.diffInsert, andText:"2"),
-//       Diff(operation:.diffEqual, andText:"_"),
-//       Diff(operation:.diffInsert, andText:"1"),
-//       Diff(operation:.diffEqual, andText:"A"),
-//       Diff(operation:.diffDelete, andText:"B"),
-//       Diff(operation:.diffInsert, andText:"2")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"AB_AB"),
-//       Diff(operation:.diffInsert, andText:"1A2_1A2")]
-//   XCTAssertEqual(expectedResult, diffs, "Multiple eliminations.")
-//
-//   // Word boundaries.
-//   diffs = [
-//       Diff(operation:.diffEqual, andText:"The c"),
-//       Diff(operation:.diffDelete, andText:"ow and the c"),
-//       Diff(operation:.diffEqual, andText:"at.")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffEqual, andText:"The "),
-//       Diff(operation:.diffDelete, andText:"cow and the "),
-//       Diff(operation:.diffEqual, andText:"cat.")]
-//   XCTAssertEqual(expectedResult, diffs, "Word boundaries.")
-//
-//   // No overlap elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"abcxx"),
-//       Diff(operation:.diffInsert, andText:"xxdef")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abcxx"),
-//       Diff(operation:.diffInsert, andText:"xxdef")]
-//   XCTAssertEqual(expectedResult, diffs, "No overlap elimination.")
-//
-//   // Overlap elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"abcxxx"),
-//       Diff(operation:.diffInsert, andText:"xxxdef")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffEqual, andText:"xxx"),
-//       Diff(operation:.diffInsert, andText:"def")]
-//   XCTAssertEqual(expectedResult, diffs, "Overlap elimination.")
-//
-//   // Reverse overlap elimination.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"xxxabc"),
-//       Diff(operation:.diffInsert, andText:"defxxx")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffInsert, andText:"def"),
-//       Diff(operation:.diffEqual, andText:"xxx"),
-//       Diff(operation:.diffDelete, andText:"abc")]
-//   XCTAssertEqual(expectedResult, diffs, "Reverse overlap elimination.")
-//
-//   // Two overlap eliminations.
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"abcd1212"),
-//       Diff(operation:.diffInsert, andText:"1212efghi"),
-//       Diff(operation:.diffEqual, andText:"----"),
-//       Diff(operation:.diffDelete, andText:"A3"),
-//       Diff(operation:.diffInsert, andText:"3BC")]
-//   [dmp diff_cleanupSemantic:diffs];
-//   expectedResult = [
-//       Diff(operation:.diffDelete, andText:"abcd"),
-//       Diff(operation:.diffEqual, andText:"1212"),
-//       Diff(operation:.diffInsert, andText:"efghi"),
-//       Diff(operation:.diffEqual, andText:"----"),
-//       Diff(operation:.diffDelete, andText:"A"),
-//       Diff(operation:.diffEqual, andText:"3"),
-//       Diff(operation:.diffInsert, andText:"BC")]
-//   XCTAssertEqual(expectedResult, diffs, "Two overlap eliminations.")
-//
-//   [dmp release];
-// }
-//
+    func test_diff_cleanupSemantic() {
+        let dmp = DiffMatchPatch()
+
+        // Cleanup semantically trivial equalities.
+        // Null case.
+        XCTAssertEqual([Diff](), dmp.diff_cleanupSemantic([Diff]()), "Null case.")
+
+        // No elimination #1.
+        var diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"cd"),
+            Diff(operation:.diffEqual, andText:"12"),
+            Diff(operation:.diffDelete, andText:"e")
+        ]
+        var expectedResult = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffInsert, andText:"cd"),
+            Diff(operation:.diffEqual, andText:"12"),
+            Diff(operation:.diffDelete, andText:"e")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "No elimination #1.")
+
+        // No elimination #2.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffInsert, andText:"ABC"),
+            Diff(operation:.diffEqual, andText:"1234"),
+            Diff(operation:.diffDelete, andText:"wxyz")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffInsert, andText:"ABC"),
+            Diff(operation:.diffEqual, andText:"1234"),
+            Diff(operation:.diffDelete, andText:"wxyz")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "No elimination #2.")
+
+        // Simple elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"a"),
+            Diff(operation:.diffEqual, andText:"b"),
+            Diff(operation:.diffDelete, andText:"c")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffInsert, andText:"b")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Simple elimination.")
+
+        // Backpass elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"ab"),
+            Diff(operation:.diffEqual, andText:"cd"),
+            Diff(operation:.diffDelete, andText:"e"),
+            Diff(operation:.diffEqual, andText:"f"),
+            Diff(operation:.diffInsert, andText:"g")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abcdef"),
+            Diff(operation:.diffInsert, andText:"cdfg")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Backpass elimination.")
+
+        // Multiple eliminations.
+        diffs = [
+            Diff(operation:.diffInsert, andText:"1"),
+            Diff(operation:.diffEqual, andText:"A"),
+            Diff(operation:.diffDelete, andText:"B"),
+            Diff(operation:.diffInsert, andText:"2"),
+            Diff(operation:.diffEqual, andText:"_"),
+            Diff(operation:.diffInsert, andText:"1"),
+            Diff(operation:.diffEqual, andText:"A"),
+            Diff(operation:.diffDelete, andText:"B"),
+            Diff(operation:.diffInsert, andText:"2")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"AB_AB"),
+            Diff(operation:.diffInsert, andText:"1A2_1A2")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Multiple eliminations.")
+
+        // Word boundaries.
+        diffs = [
+            Diff(operation:.diffEqual, andText:"The c"),
+            Diff(operation:.diffDelete, andText:"ow and the c"),
+            Diff(operation:.diffEqual, andText:"at.")
+        ]
+        expectedResult = [
+            Diff(operation:.diffEqual, andText:"The "),
+            Diff(operation:.diffDelete, andText:"cow and the "),
+            Diff(operation:.diffEqual, andText:"cat.")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Word boundaries.")
+
+        // No overlap elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"abcxx"),
+            Diff(operation:.diffInsert, andText:"xxdef")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abcxx"),
+            Diff(operation:.diffInsert, andText:"xxdef")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "No overlap elimination.")
+
+        // Overlap elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"abcxxx"),
+            Diff(operation:.diffInsert, andText:"xxxdef")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffEqual, andText:"xxx"),
+            Diff(operation:.diffInsert, andText:"def")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Overlap elimination.")
+
+        // Reverse overlap elimination.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"xxxabc"),
+            Diff(operation:.diffInsert, andText:"defxxx")
+        ]
+        expectedResult = [
+            Diff(operation:.diffInsert, andText:"def"),
+            Diff(operation:.diffEqual, andText:"xxx"),
+            Diff(operation:.diffDelete, andText:"abc")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Reverse overlap elimination.")
+
+        // Two overlap eliminations.
+        diffs = [
+            Diff(operation:.diffDelete, andText:"abcd1212"),
+            Diff(operation:.diffInsert, andText:"1212efghi"),
+            Diff(operation:.diffEqual, andText:"----"),
+            Diff(operation:.diffDelete, andText:"A3"),
+            Diff(operation:.diffInsert, andText:"3BC")
+        ]
+        expectedResult = [
+            Diff(operation:.diffDelete, andText:"abcd"),
+            Diff(operation:.diffEqual, andText:"1212"),
+            Diff(operation:.diffInsert, andText:"efghi"),
+            Diff(operation:.diffEqual, andText:"----"),
+            Diff(operation:.diffDelete, andText:"A"),
+            Diff(operation:.diffEqual, andText:"3"),
+            Diff(operation:.diffInsert, andText:"BC")
+        ]
+        XCTAssertEqual(expectedResult, dmp.diff_cleanupSemantic(diffs), "Two overlap eliminations.")
+    }
+
 // func test_diff_cleanupEfficiency() {
 //   let dmp = DiffMatchPatch()
 //   NSMutableArray *expectedResult = nil;

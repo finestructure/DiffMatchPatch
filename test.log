@@ -1,14 +1,16 @@
-Thu 16 Jun 2016 14:40:25 BST
+Thu 16 Jun 2016 16:03:23 BST
 Darwin Rhea.local 15.5.0 Darwin Kernel Version 15.5.0: Tue Apr 19 18:36:36 PDT 2016; root:xnu-3248.50.21~8/RELEASE_X86_64 x86_64
 Compile Swift Module 'DiffMatchPatchTestSuite' (3 sources)
 Linking .build/debug/DiffMatchPatchTests.xctest/Contents/MacOS/DiffMatchPatchTests
-Test Suite 'All tests' started at 2016-06-16 14:40:34.114
-Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-16 14:40:34.115
-Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-16 14:40:34.115
+Test Suite 'All tests' started at 2016-06-16 16:03:33.000
+Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-16 16:03:33.001
+Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-16 16:03:33.001
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' passed (0.005 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' passed (0.004 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' passed (0.001 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' started.
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonOverlap]' started.
@@ -18,17 +20,17 @@ Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commo
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonSuffix]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonSuffix]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' passed (0.001 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' passed (0.003 seconds).
-Test Suite 'InternalDiffMatchPatchTests' passed at 2016-06-16 14:40:34.125.
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.010 (0.010) seconds
-Test Suite 'SwiftWrapperTests' started at 2016-06-16 14:40:34.125
+Test Suite 'InternalDiffMatchPatchTests' passed at 2016-06-16 16:03:33.011.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.010 (0.010) seconds
+Test Suite 'SwiftWrapperTests' started at 2016-06-16 16:03:33.012
 Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' started.
 Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' passed (0.000 seconds).
-Test Suite 'SwiftWrapperTests' passed at 2016-06-16 14:40:34.125.
+Test Suite 'SwiftWrapperTests' passed at 2016-06-16 16:03:33.012.
 	 Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
-Test Suite 'DiffMatchPatchTests.xctest' passed at 2016-06-16 14:40:34.125.
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.010 (0.010) seconds
-Test Suite 'All tests' passed at 2016-06-16 14:40:34.125.
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.010 (0.011) seconds
+Test Suite 'DiffMatchPatchTests.xctest' passed at 2016-06-16 16:03:33.012.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.010 (0.011) seconds
+Test Suite 'All tests' passed at 2016-06-16 16:03:33.012.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.010 (0.011) seconds

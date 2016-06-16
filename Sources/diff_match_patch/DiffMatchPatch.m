@@ -1621,8 +1621,8 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   thisPointer = 1;
   while (thisPointer < diffs.count) {
     if (prevDiff.operation == OperationDiffDelete && thisDiff.operation == OperationDiffInsert) {
-      NSString *deletion = prevDiff.text;
-      NSString *insertion = thisDiff.text;
+      NSString *deletion = [prevDiff.text copy];
+      NSString *insertion = [thisDiff.text copy];
       NSUInteger overlap_length1 = (NSUInteger)diff_commonOverlap((__bridge CFStringRef)deletion, (__bridge CFStringRef)insertion);
       NSUInteger overlap_length2 = (NSUInteger)diff_commonOverlap((__bridge CFStringRef)insertion, (__bridge CFStringRef)deletion);
       if (overlap_length1 >= overlap_length2) {
