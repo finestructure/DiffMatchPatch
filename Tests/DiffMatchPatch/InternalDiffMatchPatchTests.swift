@@ -578,39 +578,36 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(expectedResult, diffs, "High cost elimination.")
     }
 
-// func test_diff_prettyHtml() {
-//   let dmp = DiffMatchPatch()
-//
-//   // Pretty print.
-//   NSMutableArray *diffs = [
-//       Diff(operation:.diffEqual, andText:"a\n"),
-//       Diff(operation:.diffDelete, andText:"<B>b</B>"),
-//       Diff(operation:.diffInsert, andText:"c&d")]
-//   NSString *expectedResult = "<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>";
-//   XCTAssertEqual(expectedResult, [dmp diff_prettyHtml:diffs], "Pretty print.")
-//
-//   [dmp release];
-// }
-//
-// func test_diff_text() {
-//   let dmp = DiffMatchPatch()
-//
-//   // Compute the source and destination texts.
-//   NSMutableArray *diffs = [
-//       Diff(operation:.diffEqual, andText:"jump"),
-//       Diff(operation:.diffDelete, andText:"s"),
-//       Diff(operation:.diffInsert, andText:"ed"),
-//       Diff(operation:.diffEqual, andText:" over "),
-//       Diff(operation:.diffDelete, andText:"the"),
-//       Diff(operation:.diffInsert, andText:"a"),
-//       Diff(operation:.diffEqual, andText:" lazy")]
-//   XCTAssertEqual("jumps over the lazy", [dmp diff_text1:diffs], "Compute the source and destination texts #1")
-//
-//   XCTAssertEqual("jumped over a lazy", [dmp diff_text2:diffs], "Compute the source and destination texts #2")
-//
-//   [dmp release];
-// }
-//
+    func test_diff_prettyHtml() {
+        let dmp = DiffMatchPatch()
+
+        // Pretty print.
+        let diffs = [
+            Diff(operation:.diffEqual, andText:"a\n"),
+            Diff(operation:.diffDelete, andText:"<B>b</B>"),
+            Diff(operation:.diffInsert, andText:"c&d")
+        ]
+        let expectedResult = "<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>";
+        XCTAssertEqual(expectedResult, dmp.diff_prettyHtml(diffs), "Pretty print.")
+    }
+
+    func test_diff_text() {
+        let dmp = DiffMatchPatch()
+
+        // Compute the source and destination texts.
+        let diffs = [
+            Diff(operation:.diffEqual, andText:"jump"),
+            Diff(operation:.diffDelete, andText:"s"),
+            Diff(operation:.diffInsert, andText:"ed"),
+            Diff(operation:.diffEqual, andText:" over "),
+            Diff(operation:.diffDelete, andText:"the"),
+            Diff(operation:.diffInsert, andText:"a"),
+            Diff(operation:.diffEqual, andText:" lazy")
+        ]
+        XCTAssertEqual("jumps over the lazy", dmp.diff_text1(diffs), "Compute the source and destination texts #1")
+        XCTAssertEqual("jumped over a lazy", dmp.diff_text2(diffs), "Compute the source and destination texts #2")
+    }
+
 // func test_diff_delta() {
 //   let dmp = DiffMatchPatch()
 //   NSMutableArray *expectedResult = nil;
