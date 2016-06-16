@@ -1,0 +1,6 @@
+#!/bin/sh
+
+LOGFILE=test.log
+date 2>&1 | tee $LOGFILE
+uname -a 2>&1 | tee -a $LOGFILE
+swift build --clean && swift build && swift test | tee -a $LOGFILE

@@ -1,0 +1,4 @@
+Thu 16 Jun 2016 08:49:04 BST
+Darwin Rhea.local 15.5.0 Darwin Kernel Version 15.5.0: Tue Apr 19 18:36:36 PDT 2016; root:xnu-3248.50.21~8/RELEASE_X86_64 x86_64
+Compile Swift Module 'DiffMatchPatchTestSuite' (3 sources)
+Linking .build/debug/DiffMatchPatchTests.xctest/Contents/MacOS/DiffMatchPatchTests
