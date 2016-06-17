@@ -1,20 +1,20 @@
-Fri 17 Jun 2016 09:35:38 BST
+Fri 17 Jun 2016 09:47:22 BST
 Darwin Rhea.local 15.5.0 Darwin Kernel Version 15.5.0: Tue Apr 19 18:36:36 PDT 2016; root:xnu-3248.50.21~8/RELEASE_X86_64 x86_64
 Compile Swift Module 'DiffMatchPatchTestSuite' (3 sources)
 Linking .build/debug/DiffMatchPatchTests.xctest/Contents/MacOS/DiffMatchPatchTests
-Test Suite 'All tests' started at 2016-06-17 09:35:52.188
-Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-17 09:35:52.189
-Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-17 09:35:52.189
+Test Suite 'All tests' started at 2016-06-17 09:47:32.972
+Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-17 09:47:32.973
+Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-17 09:47:32.973
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' passed (0.005 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' passed (0.000 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' passed (0.000 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' passed (0.000 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' passed (0.000 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonOverlap]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonOverlap]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonPrefix]' started.
@@ -25,20 +25,24 @@ Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_delta
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_delta]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' passed (0.001 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_levenshtein]' started.
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_levenshtein]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' passed (0.003 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_prettyHtml]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_prettyHtml]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_text]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_text]' passed (0.000 seconds).
-Test Suite 'InternalDiffMatchPatchTests' passed at 2016-06-17 09:35:52.202.
-	 Executed 13 tests, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
-Test Suite 'SwiftWrapperTests' started at 2016-06-17 09:35:52.202
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_xIndex]' started.
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_xIndex]' passed (0.000 seconds).
+Test Suite 'InternalDiffMatchPatchTests' passed at 2016-06-17 09:47:32.987.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
+Test Suite 'SwiftWrapperTests' started at 2016-06-17 09:47:32.987
 Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' started.
 Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' passed (0.000 seconds).
-Test Suite 'SwiftWrapperTests' passed at 2016-06-17 09:35:52.202.
+Test Suite 'SwiftWrapperTests' passed at 2016-06-17 09:47:32.988.
 	 Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
-Test Suite 'DiffMatchPatchTests.xctest' passed at 2016-06-17 09:35:52.202.
-	 Executed 14 tests, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
-Test Suite 'All tests' passed at 2016-06-17 09:35:52.202.
-	 Executed 14 tests, with 0 failures (0 unexpected) in 0.012 (0.014) seconds
+Test Suite 'DiffMatchPatchTests.xctest' passed at 2016-06-17 09:47:32.988.
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.013 (0.015) seconds
+Test Suite 'All tests' passed at 2016-06-17 09:47:32.988.
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.013 (0.016) seconds

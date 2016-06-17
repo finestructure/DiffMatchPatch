@@ -693,69 +693,73 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(diffs, expectedResult, "diff_fromDelta: Unchanged characters. Convert delta string into a diff.")
     }
 
-// func test_diff_xIndex() {
-//   let dmp = DiffMatchPatch()
-//
-//   // Translate a location in text1 to text2.
-//   NSMutableArray *diffs = [
-//       Diff(operation:.diffDelete, andText:"a"),
-//       Diff(operation:.diffInsert, andText:"1234"),
-//       Diff(operation:.diffEqual, andText:"xyz"), nil] /* Diff */;
-//   XCTAssertEqual(5, [dmp diff_xIndexIn:diffs location:2], "diff_xIndex: Translation on equality. Translate a location in text1 to text2.")
-//
-//   diffs = [
-//       Diff(operation:.diffEqual, andText:"a"),
-//       Diff(operation:.diffDelete, andText:"1234"),
-//       Diff(operation:.diffEqual, andText:"xyz"), nil] /* Diff */;
-//   XCTAssertEqual(1, [dmp diff_xIndexIn:diffs location:3], "diff_xIndex: Translation on deletion.")
-//
-//   [dmp release];
-// }
-//
-// func test_diff_levenshtein() {
-//   let dmp = DiffMatchPatch()
-//
-//   NSMutableArray *diffs = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffInsert, andText:"1234"),
-//       Diff(operation:.diffEqual, andText:"xyz"), nil] /* Diff */;
-//   XCTAssertEqual(4, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with trailing equality.")
-//
-//   diffs = [
-//       Diff(operation:.diffEqual, andText:"xyz"),
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffInsert, andText:"1234"), nil] /* Diff */;
-//   XCTAssertEqual(4, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with leading equality.")
-//
-//   diffs = [
-//       Diff(operation:.diffDelete, andText:"abc"),
-//       Diff(operation:.diffEqual, andText:"xyz"),
-//       Diff(operation:.diffInsert, andText:"1234"), nil] /* Diff */;
-//   XCTAssertEqual(7, [dmp diff_levenshtein:diffs], "diff_levenshtein: Levenshtein with middle equality.")
-//
-//   [dmp release];
-// }
-//
-// func diff_bisectTest;
-// {
-//   let dmp = DiffMatchPatch()
-//
-//   // Normal.
-//   NSString *a = "cat";
-//   NSString *b = "map";
-//   // Since the resulting diff hasn't been normalized, it would be ok if
-//   // the insertion and deletion pairs are swapped.
-//   // If the order changes, tweak this test as required.
-//   NSMutableArray *diffs = [Diff(operation:.diffDelete, andText:"c"), Diff(operation:.diffInsert, andText:"m"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"t"), Diff(operation:.diffInsert, andText:"p")]
-//   XCTAssertEqual(diffs, [dmp diff_bisectOfOldString:a andNewString:b deadline:[[NSDate distantFuture] timeIntervalSinceReferenceDate]], "Bisect test.")
-//
-//   // Timeout.
-//   diffs = [Diff(operation:.diffDelete, andText:"cat"), Diff(operation:.diffInsert, andText:"map")]
-//   XCTAssertEqual(diffs, [dmp diff_bisectOfOldString:a andNewString:b deadline:[[NSDate distantPast] timeIntervalSinceReferenceDate]], "Bisect timeout.")
-//
-//   [dmp release];
-// }
-//
+    func test_diff_xIndex() {
+        let dmp = DiffMatchPatch()
+
+        // Translate a location in text1 to text2.
+        var diffs = [
+            Diff(operation:.diffDelete, andText:"a"),
+            Diff(operation:.diffInsert, andText:"1234"),
+            Diff(operation:.diffEqual, andText:"xyz")
+        ]
+        XCTAssertEqual(5, dmp.diff_xIndex(in: diffs, location:2), "diff_xIndex: Translation on equality. Translate a location in text1 to text2.")
+
+        diffs = [
+            Diff(operation:.diffEqual, andText:"a"),
+            Diff(operation:.diffDelete, andText:"1234"),
+            Diff(operation:.diffEqual, andText:"xyz")
+        ]
+        XCTAssertEqual(1, dmp.diff_xIndex(in: diffs, location:3), "diff_xIndex: Translation on deletion.")
+    }
+
+    func test_diff_levenshtein() {
+        let dmp = DiffMatchPatch()
+
+        var diffs = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffInsert, andText:"1234"),
+            Diff(operation:.diffEqual, andText:"xyz")
+        ]
+        XCTAssertEqual(4, dmp.diff_levenshtein(diffs), "diff_levenshtein: Levenshtein with trailing equality.")
+
+        diffs = [
+            Diff(operation:.diffEqual, andText:"xyz"),
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffInsert, andText:"1234")
+        ]
+        XCTAssertEqual(4, dmp.diff_levenshtein(diffs), "diff_levenshtein: Levenshtein with leading equality.")
+
+        diffs = [
+            Diff(operation:.diffDelete, andText:"abc"),
+            Diff(operation:.diffEqual, andText:"xyz"),
+            Diff(operation:.diffInsert, andText:"1234")
+        ]
+        XCTAssertEqual(7, dmp.diff_levenshtein(diffs), "diff_levenshtein: Levenshtein with middle equality.")
+    }
+
+    func diff_bisectTest() {
+        let dmp = DiffMatchPatch()
+
+        // Normal.
+        let a = "cat"
+        let b = "map"
+        // Since the resulting diff hasn't been normalized, it would be ok if
+        // the insertion and deletion pairs are swapped.
+        // If the order changes, tweak this test as required.
+        var diffs = [
+            Diff(operation:.diffDelete, andText:"c"),
+            Diff(operation:.diffInsert, andText:"m"),
+            Diff(operation:.diffEqual, andText:"a"),
+            Diff(operation:.diffDelete, andText:"t"),
+            Diff(operation:.diffInsert, andText:"p")
+        ]
+        XCTAssertEqual(diffs, dmp.diff_bisect(ofOldString: a, andNewString: b, deadline: Date.distantFuture.timeIntervalSinceReferenceDate), "Bisect test.")
+
+        // Timeout.
+        diffs = [Diff(operation:.diffDelete, andText:"cat"), Diff(operation:.diffInsert, andText:"map")]
+        XCTAssertEqual(diffs, dmp.diff_bisect(ofOldString: a, andNewString:b, deadline:Date.distantFuture.timeIntervalSinceReferenceDate), "Bisect timeout.")
+    }
+
 // func test_diff_main() {
 //   let dmp = DiffMatchPatch()
 //
