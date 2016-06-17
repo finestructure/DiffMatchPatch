@@ -1407,17 +1407,17 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
           return nil;
         }
         NSString *text;
-        @try {
+        if (thisPointer + n <= text1.length) {
           text = [text1 substringWithRange:NSMakeRange(thisPointer, (NSUInteger)n)];
           thisPointer += (NSUInteger)n;
-        }
-        @catch (NSException *e) {
-          if (error != NULL) {
-            // CHANGME: Pass on the information contained in e
-            errorDetail = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Delta length (%lu) larger than source text length (%lu).", @"Error"),
-                 (unsigned long)thisPointer, (unsigned long)text1.length]};
-            *error = [NSError errorWithDomain:@"DiffMatchPatchErrorDomain" code:102 userInfo:errorDetail];
-          }
+        } else {
+          // CHANGME: In Swift 3.0-preview-1 there's no exception but an immediate crash
+          //    fatal error: subscript: subrange extends past String end
+          // when calling substringWithRange out of bounds. So we can't rely on exception
+          // handling to propagate this error
+          errorDetail = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Delta length (%lu) larger than source text length (%lu).", @"Error"),
+               (unsigned long)(thisPointer + n), (unsigned long)text1.length]};
+          *error = [NSError errorWithDomain:@"DiffMatchPatchErrorDomain" code:102 userInfo:errorDetail];
           return nil;
         }
         if ([token characterAtIndex:0] == '=') {

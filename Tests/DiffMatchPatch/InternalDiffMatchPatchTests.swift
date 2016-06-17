@@ -608,85 +608,91 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual("jumped over a lazy", dmp.diff_text2(diffs), "Compute the source and destination texts #2")
     }
 
-// func test_diff_delta() {
-//   let dmp = DiffMatchPatch()
-//   NSMutableArray *expectedResult = nil;
-//   NSError *error = nil;
-//
-//   // Convert a diff into delta string.
-//   NSMutableArray *diffs = [
-//       Diff(operation:.diffEqual, andText:"jump"),
-//       Diff(operation:.diffDelete, andText:"s"),
-//       Diff(operation:.diffInsert, andText:"ed"),
-//       Diff(operation:.diffEqual, andText:" over "),
-//       Diff(operation:.diffDelete, andText:"the"),
-//       Diff(operation:.diffInsert, andText:"a"),
-//       Diff(operation:.diffEqual, andText:" lazy"),
-//       Diff(operation:.diffInsert, andText:"old dog")]
-//   NSString *text1 = [dmp diff_text1:diffs];
-//   XCTAssertEqual("jumps over the lazy", text1, "Convert a diff into delta string 1.")
-//
-//   NSString *delta = [dmp diff_toDelta:diffs];
-//   XCTAssertEqual("=4\t-1\t+ed\t=6\t-3\t+a\t=5\t+old dog", delta, "Convert a diff into delta string 2.")
-//
-//   // Convert delta string into a diff.
-//   XCTAssertEqual(diffs, [dmp diff_fromDeltaWithText:text1 andDelta:delta error:NULL], "Convert delta string into a diff.")
-//
-//   // Generates error (19 < 20).
-//   diffs = [dmp diff_fromDeltaWithText:[text1 stringByAppendingString:"x"] andDelta:delta error:&error];
-//   if (diffs != nil || error == nil) {
-//     XCTFail("diff_fromDelta: Too long.")
-//   }
-//   error = nil;
-//
-//   // Generates error (19 > 18).
-//   diffs = [dmp diff_fromDeltaWithText:[text1 substringFromIndex:1] andDelta:delta error:&error];
-//   if (diffs != nil || error == nil) {
-//     XCTFail("diff_fromDelta: Too short.")
-//   }
-//   error = nil;
-//
-//   // Generates error (%c3%xy invalid Unicode).
-//   diffs = [dmp diff_fromDeltaWithText:"", andDelta:"+%c3%xy" error:&error];
-//   if (diffs != nil || error == nil) {
-//     XCTFail("diff_fromDelta: Invalid character.")
-//   }
-//   error = nil;
-//
-//   // Test deltas with special characters.
-//   unichar zero = (unichar)0;
-//   unichar one = (unichar)1;
-//   unichar two = (unichar)2;
-//   diffs = [
-//       Diff(operation:.diffEqual, andText:[NSString stringWithFormat:"\U00000680 %C \t %%", zero]],
-//       Diff(operation:.diffDelete, andText:[NSString stringWithFormat:"\U00000681 %C \n ^", one]],
-//       Diff(operation:.diffInsert, andText:[NSString stringWithFormat:"\U00000682 %C \\ |", two]]]
-//   text1 = [dmp diff_text1:diffs];
-//   NSString *expectedString = [NSString stringWithFormat:"\U00000680 %C \t %%\U00000681 %C \n ^", zero, one];
-//   XCTAssertEqual(expectedString, text1, "Test deltas with special characters.")
-//
-//   delta = [dmp diff_toDelta:diffs];
-//   // Upper case, because to CFURLCreateStringByAddingPercentEscapes() uses upper.
-//   XCTAssertEqual("=7\t-7\t+%DA%82 %02 %5C %7C", delta, "diff_toDelta: Unicode 1.")
-//
-//   XCTAssertEqual(diffs, [dmp diff_fromDeltaWithText:text1 andDelta:delta error:NULL], "diff_fromDelta: Unicode 2.")
-//
-//   // Verify pool of unchanged characters.
-//   diffs = [NSMutableArray arrayWithObject:
-//        Diff(operation:.diffInsert, andText:"A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # "]];
-//   NSString *text2 = [dmp diff_text2:diffs];
-//   XCTAssertEqual("A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ", text2, "diff_text2: Unchanged characters 1.")
-//
-//   delta = [dmp diff_toDelta:diffs];
-//   XCTAssertEqual("+A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ", delta, "diff_toDelta: Unchanged characters 2.")
-//
-//   // Convert delta string into a diff.
-//   expectedResult = [dmp diff_fromDeltaWithText:"", andDelta:delta error:NULL];
-//   XCTAssertEqual(diffs, expectedResult, "diff_fromDelta: Unchanged characters. Convert delta string into a diff.")
-//
-//   [dmp release];
-// }
-//
+    func test_diff_delta() {
+        let dmp = DiffMatchPatch()
+
+        // Convert a diff into delta string.
+        var diffs = [
+            Diff(operation:.diffEqual, andText:"jump"),
+            Diff(operation:.diffDelete, andText:"s"),
+            Diff(operation:.diffInsert, andText:"ed"),
+            Diff(operation:.diffEqual, andText:" over "),
+            Diff(operation:.diffDelete, andText:"the"),
+            Diff(operation:.diffInsert, andText:"a"),
+            Diff(operation:.diffEqual, andText:" lazy"),
+            Diff(operation:.diffInsert, andText:"old dog")
+        ]
+        var text1 = dmp.diff_text1(diffs)
+        XCTAssertEqual("jumps over the lazy", text1, "Convert a diff into delta string 1.")
+
+        var delta = dmp.diff_(toDelta: diffs)
+        XCTAssertEqual("=4\t-1\t+ed\t=6\t-3\t+a\t=5\t+old dog", delta, "Convert a diff into delta string 2.")
+
+        // Convert delta string into a diff.
+        XCTAssertEqual(diffs, try dmp.diff_fromDelta(withText: text1, andDelta: delta), "Convert delta string into a diff.")
+
+        // Generates error (19 < 20).
+        do {
+            try dmp.diff_fromDelta(withText: text1 + "x", andDelta: delta)
+            XCTFail("expected error")
+        } catch let err as NSError {
+            XCTAssertEqual(err.code, 103)
+            XCTAssertEqual(err.localizedDescription, "Delta length (19) smaller than source text length (20).")
+        } catch {
+            XCTFail("unexpected error type")
+        }
+
+        // Generates error (19 > 18).
+        do {
+            try dmp.diff_fromDelta(withText: text1._substring(from: 1), andDelta:delta)
+            XCTFail("expected error")
+        } catch let err as NSError {
+            XCTAssertEqual(err.code, 102)
+            XCTAssertEqual(err.localizedDescription, "Delta length (19) larger than source text length (18).")
+        } catch {
+            XCTFail("unexpected error type")
+        }
+
+        // Generates error (%c3%xy invalid Unicode).
+        do {
+            try dmp.diff_fromDelta(withText:"", andDelta:"+%c3%xy")
+            XCTFail("expected error")
+        } catch let err as NSError {
+            XCTAssertEqual(err.code, 99)
+            XCTAssertEqual(err.localizedDescription, "Invalid character in diff_fromDelta: (null)")
+        } catch {
+            XCTFail("unexpected error type")
+        }
+
+        // Test deltas with special characters.
+        diffs = [
+            Diff(operation:.diffEqual, andText:String(format:"\u{00000680} %C \t %%", 0)),
+            Diff(operation:.diffDelete, andText:String(format:"\u{00000681} %C \n ^", 1)),
+            Diff(operation:.diffInsert, andText:String(format:"\u{00000682} %C \\ |", 2))
+        ]
+        text1 = dmp.diff_text1(diffs)
+        let expectedString = String(format:"\u{00000680} %C \t %%\u{00000681} %C \n ^", 0, 1)
+        XCTAssertEqual(expectedString, text1, "Test deltas with special characters.")
+
+        delta = dmp.diff_(toDelta: diffs)
+        // Upper case, because to CFURLCreateStringByAddingPercentEscapes() uses upper.
+        XCTAssertEqual("=7\t-7\t+%DA%82 %02 %5C %7C", delta, "diff_toDelta: Unicode 1.")
+
+        XCTAssertEqual(diffs, try! dmp.diff_fromDelta(withText:text1, andDelta:delta), "diff_fromDelta: Unicode 2.")
+
+        // Verify pool of unchanged characters.
+        diffs = [Diff(operation:.diffInsert, andText:"A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ")]
+        let text2 = dmp.diff_text2(diffs)
+        XCTAssertEqual("A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ", text2, "diff_text2: Unchanged characters 1.")
+
+        delta = dmp.diff_(toDelta: diffs)
+        XCTAssertEqual("+A-Z a-z 0-9 - _ . ! ~ * ' ( ) ; / ? : @ & = + $ , # ", delta, "diff_toDelta: Unchanged characters 2.")
+
+        // Convert delta string into a diff.
+        let expectedResult = try! dmp.diff_fromDelta(withText:"", andDelta: delta)
+        XCTAssertEqual(diffs, expectedResult, "diff_fromDelta: Unchanged characters. Convert delta string into a diff.")
+    }
+
 // func test_diff_xIndex() {
 //   let dmp = DiffMatchPatch()
 //
@@ -781,8 +787,8 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   diffs = [Diff(operation:.diffDelete, andText:"Apple"), Diff(operation:.diffInsert, andText:"Banana"), Diff(operation:.diffEqual, andText:"s are a"), Diff(operation:.diffInsert, andText:"lso"), Diff(operation:.diffEqual, andText:" fruit.")]
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"Apples are a fruit.", andNewString:"Bananas are also fruit." checkLines:NO], "diff_main: Simple case #2.")
 //
-//   diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"\U00000680"), Diff(operation:.diffEqual, andText:"x"), Diff(operation:.diffDelete, andText:"\t"), Diff(operation:.diffInsert, andText:[NSString stringWithFormat:"%C", 0]]]
-//   NSString *aString = [NSString stringWithFormat:"\U00000680x%C", 0];
+//   diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"\u{00000680"), Diff(operation:.diffEqual, andText:"x"), Diff(operation:.diffDelete, andText:"\t"), Diff(operation:.diffInsert, andText:String(format:"%C", 0]]]
+//   NSString *aString = String(format:"\u{00000680x%C", 0];
 //   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"ax\t", andNewString:aString checkLines:NO], "diff_main: Simple case #3.")
 //
 //   diffs = [Diff(operation:.diffDelete, andText:"1"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"y"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffDelete, andText:"2"), Diff(operation:.diffInsert, andText:"xab")]
@@ -1157,42 +1163,42 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   patches = [dmp patch_makeFromOldString:"", andNewString:"")
 //   NSArray *results = [dmp patch_apply:patches toString:"Hello world.")
 //   NSMutableArray *boolArray = [results objectAtIndex:1];
-//   NSString *resultStr = [NSString stringWithFormat:"%@\t%lu", [results objectAtIndex:0], (unsigned long)boolArray.count];
+//   NSString *resultStr = String(format:"%@\t%lu", [results objectAtIndex:0], (unsigned long)boolArray.count];
 //   XCTAssertEqual("Hello world.\t0", resultStr, "patch_apply: Null case.")
 //
 //   patches = [dmp patch_makeFromOldString:"The quick brown fox jumps over the lazy dog.", andNewString:"That quick brown fox jumped over a lazy dog.")
 //   results = [dmp patch_apply:patches toString:"The quick brown fox jumps over the lazy dog.")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("That quick brown fox jumped over a lazy dog.\ttrue\ttrue", resultStr, "patch_apply: Exact match.")
 //
 //   results = [dmp patch_apply:patches toString:"The quick red rabbit jumps over the tired tiger.")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("That quick red rabbit jumped over a tired tiger.\ttrue\ttrue", resultStr, "patch_apply: Partial match.")
 //
 //   results = [dmp patch_apply:patches toString:"I am the very model of a modern major general.")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("I am the very model of a modern major general.\tfalse\tfalse", resultStr, "patch_apply: Failed match.")
 //
 //   patches = [dmp patch_makeFromOldString:"x1234567890123456789012345678901234567890123456789012345678901234567890y", andNewString:"xabcy")
 //   results = [dmp patch_apply:patches toString:"x123456789012345678901234567890-----++++++++++-----123456789012345678901234567890y")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("xabcy\ttrue\ttrue", resultStr, "patch_apply: Big delete, small change.")
 //
 //   patches = [dmp patch_makeFromOldString:"x1234567890123456789012345678901234567890123456789012345678901234567890y", andNewString:"xabcy")
 //   results = [dmp patch_apply:patches toString:"x12345678901234567890---------------++++++++++---------------12345678901234567890y")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("xabc12345678901234567890---------------++++++++++---------------12345678901234567890y\tfalse\ttrue", resultStr, "patch_apply: Big delete, big change 1.")
 //
 //   dmp.Patch_DeleteThreshold = 0.6f;
 //   patches = [dmp patch_makeFromOldString:"x1234567890123456789012345678901234567890123456789012345678901234567890y", andNewString:"xabcy")
 //   results = [dmp patch_apply:patches toString:"x12345678901234567890---------------++++++++++---------------12345678901234567890y")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("xabcy\ttrue\ttrue", resultStr, "patch_apply: Big delete, big change 2.")
 //   dmp.Patch_DeleteThreshold = 0.5f;
 //
@@ -1201,7 +1207,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   patches = [dmp patch_makeFromOldString:"abcdefghijklmnopqrstuvwxyz--------------------1234567890", andNewString:"abcXXXXXXXXXXdefghijklmnopqrstuvwxyz--------------------1234567YYYYYYYYYY890")
 //   results = [dmp patch_apply:patches toString:"ABCDEFGHIJKLMNOPQRSTUVWXYZ--------------------1234567890")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
+//   resultStr = String(format:"%@\t%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0]), stringForBOOL([boolArray objectAtIndex:1])];
 //   XCTAssertEqual("ABCDEFGHIJKLMNOPQRSTUVWXYZ--------------------1234567YYYYYYYYYY890\tfalse\ttrue", resultStr, "patch_apply: Compensate for failed patch.")
 //   dmp.Match_Threshold = 0.5f;
 //   dmp.Match_Distance = 1000;
@@ -1219,19 +1225,19 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   patches = [dmp patch_makeFromOldString:"", andNewString:"test")
 //   results = [dmp patch_apply:patches toString:"")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
+//   resultStr = String(format:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
 //   XCTAssertEqual("test\ttrue", resultStr, "patch_apply: Edge exact match.")
 //
 //   patches = [dmp patch_makeFromOldString:"XY", andNewString:"XtestY")
 //   results = [dmp patch_apply:patches toString:"XY")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
+//   resultStr = String(format:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
 //   XCTAssertEqual("XtestY\ttrue", resultStr, "patch_apply: Near edge exact match.")
 //
 //   patches = [dmp patch_makeFromOldString:"y", andNewString:"y123")
 //   results = [dmp patch_apply:patches toString:"x")
 //   boolArray = [results objectAtIndex:1];
-//   resultStr = [NSString stringWithFormat:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
+//   resultStr = String(format:"%@\t%", [results objectAtIndex:0], stringForBOOL([boolArray objectAtIndex:0])];
 //   XCTAssertEqual("x123\ttrue", resultStr, "patch_apply: Edge partial match.")
 //
 //   [dmp release];
