@@ -644,7 +644,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 
         // Generates error (19 > 18).
         do {
-            try dmp.diff_fromDelta(withText: text1._substring(from: 1), andDelta:delta)
+            try dmp.diff_fromDelta(withText: text1.substring(from: text1.index(after: text1.startIndex)), andDelta:delta)
             XCTFail("expected error")
         } catch let err as NSError {
             XCTAssertEqual(err.code, 102)
