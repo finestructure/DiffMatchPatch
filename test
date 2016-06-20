@@ -3,4 +3,5 @@
 LOGFILE=test.log
 date 2>&1 | tee $LOGFILE
 uname -a 2>&1 | tee -a $LOGFILE
+set -o pipefail
 swift build --clean && swift build && swift test 2>&1 | tee -a $LOGFILE
