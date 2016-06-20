@@ -1,18 +1,202 @@
-Fri 17 Jun 2016 09:47:22 BST
+Mon 20 Jun 2016 13:12:42 BST
 Darwin Rhea.local 15.5.0 Darwin Kernel Version 15.5.0: Tue Apr 19 18:36:36 PDT 2016; root:xnu-3248.50.21~8/RELEASE_X86_64 x86_64
 Compile Swift Module 'DiffMatchPatchTestSuite' (3 sources)
+/Users/sas/Projects/GitHub/DiffMatchPatch/Tests/DiffMatchPatch/InternalDiffMatchPatchTests.swift:793:7: warning: variable 'diffs' was never mutated; consider changing to 'let' constant
+  var diffs = [Diff(operation:.diffDelete, andText:"Apple"), Diff(operation:.diffInsert, andText:"Banana"), Diff(operation:.diffEqual, andText:"s are a"), Diff(operation:.diffInsert, andText:"lso"), Diff(operation:.diffEqual, andText:" fruit.")]
+  ~~~ ^
+  let
 Linking .build/debug/DiffMatchPatchTests.xctest/Contents/MacOS/DiffMatchPatchTests
-Test Suite 'All tests' started at 2016-06-17 09:47:32.972
-Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-17 09:47:32.973
-Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-17 09:47:32.973
+Test Suite 'All tests' started at 2016-06-20 13:12:54.373
+Test Suite 'DiffMatchPatchTests.xctest' started at 2016-06-20 13:12:54.374
+Test Suite 'InternalDiffMatchPatchTests' started at 2016-06-20 13:12:54.374
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_charsToLines]' passed (0.005 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' passed (0.001 seconds).
+2016-06-20 13:12:54.379 xctest[47650:1263183] diffs count: 6
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: 12
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: xyz
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: xyz
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: 34
+2016-06-20 13:12:54.380 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.380 xctest[47650:1263183] middle
+2016-06-20 13:12:54.381 xctest[47650:1263183] diffs count: 5
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: 12
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: x
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: x
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: 34
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.381 xctest[47650:1263183] middle
+2016-06-20 13:12:54.381 xctest[47650:1263183] diffs count: 9
+2016-06-20 13:12:54.381 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: 12
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: xy
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: xy
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: 34
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: z
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: z
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: 56
+2016-06-20 13:12:54.382 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.382 xctest[47650:1263183] middle
+2016-06-20 13:12:54.383 xctest[47650:1263183] diffs count: 6
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: 12
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: wxyz
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: wxyz
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: 34
+2016-06-20 13:12:54.383 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.383 xctest[47650:1263183] middle
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupEfficiency]' passed (0.005 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' passed (0.001 seconds).
+2016-06-20 13:12:54.384 xctest[47650:1263183] diffs count: 0
+2016-06-20 13:12:54.384 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.384 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.384 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.384 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.384 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.384 xctest[47650:1263183] middle
+2016-06-20 13:12:54.384 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.385 xctest[47650:1263183] middle
+2016-06-20 13:12:54.385 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.385 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.385 xctest[47650:1263183] middle
+2016-06-20 13:12:54.385 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.386 xctest[47650:1263183] middle
+2016-06-20 13:12:54.386 xctest[47650:1263183] diffs count: 6
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: d
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: e
+2016-06-20 13:12:54.386 xctest[47650:1263183] diff: f
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.387 xctest[47650:1263183] middle
+2016-06-20 13:12:54.387 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: abc
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: dc
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.387 xctest[47650:1263183] middle
+2016-06-20 13:12:54.387 xctest[47650:1263183] diffs count: 5
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: x
+2016-06-20 13:12:54.387 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: abc
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: dc
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: y
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.388 xctest[47650:1263183] middle
+2016-06-20 13:12:54.388 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: ba
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.388 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.388 xctest[47650:1263183] middle
+2016-06-20 13:12:54.388 xctest[47650:1263183] diffs count: 2
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: ac
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.389 xctest[47650:1263183] middle
+2016-06-20 13:12:54.389 xctest[47650:1263183] diffs count: 3
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.389 xctest[47650:1263183] middle
+2016-06-20 13:12:54.389 xctest[47650:1263183] diffs count: 2
+2016-06-20 13:12:54.389 xctest[47650:1263183] diff: ca
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: ba
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.390 xctest[47650:1263183] middle
+2016-06-20 13:12:54.390 xctest[47650:1263183] diffs count: 5
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: ac
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: x
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.390 xctest[47650:1263183] middle
+2016-06-20 13:12:54.390 xctest[47650:1263183] diffs count: 4
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.390 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: ca
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: cx
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.391 xctest[47650:1263183] middle
+2016-06-20 13:12:54.391 xctest[47650:1263183] diffs count: 2
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: abc
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: acx
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.391 xctest[47650:1263183] middle
+2016-06-20 13:12:54.391 xctest[47650:1263183] diffs count: 5
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: x
+2016-06-20 13:12:54.391 xctest[47650:1263183] diff: ca
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.392 xctest[47650:1263183] middle
+2016-06-20 13:12:54.392 xctest[47650:1263183] diffs count: 4
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: xc
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: ac
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.392 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.392 xctest[47650:1263183] middle
+2016-06-20 13:12:54.392 xctest[47650:1263183] diffs count: 2
+2016-06-20 13:12:54.393 xctest[47650:1263183] diff: xca
+2016-06-20 13:12:54.393 xctest[47650:1263183] diff: cba
+2016-06-20 13:12:54.393 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.393 xctest[47650:1263183] middle
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupMerge]' passed (0.009 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' passed (0.001 seconds).
+2016-06-20 13:12:54.393 xctest[47650:1263183] diffs count: 4
+2016-06-20 13:12:54.393 xctest[47650:1263183] diff: a
+2016-06-20 13:12:54.393 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: b
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: c
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.394 xctest[47650:1263183] middle
+2016-06-20 13:12:54.394 xctest[47650:1263183] diffs count: 7
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: ab
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: cd
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: e
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: f
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: f
+2016-06-20 13:12:54.394 xctest[47650:1263183] diff: g
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.395 xctest[47650:1263183] middle
+2016-06-20 13:12:54.395 xctest[47650:1263183] diffs count: 12
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: 1
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: A
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: A
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: B
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: 2
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: _
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: _
+2016-06-20 13:12:54.395 xctest[47650:1263183] diff: 1
+2016-06-20 13:12:54.396 xctest[47650:1263183] diff: A
+2016-06-20 13:12:54.396 xctest[47650:1263183] diff: A
+2016-06-20 13:12:54.396 xctest[47650:1263183] diff: B
+2016-06-20 13:12:54.396 xctest[47650:1263183] diff: 2
+2016-06-20 13:12:54.396 xctest[47650:1263183] diff: 
+2016-06-20 13:12:54.396 xctest[47650:1263183] middle
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemantic]' passed (0.003 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_cleanupSemanticLossless]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commonOverlap]' started.
@@ -24,25 +208,19 @@ Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_commo
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_delta]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_delta]' passed (0.001 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' passed (0.001 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_halfmatch]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_levenshtein]' started.
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_levenshtein]' passed (0.000 seconds).
 Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' passed (0.003 seconds).
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_prettyHtml]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_prettyHtml]' passed (0.000 seconds).
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_text]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_text]' passed (0.000 seconds).
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_xIndex]' started.
-Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_xIndex]' passed (0.000 seconds).
-Test Suite 'InternalDiffMatchPatchTests' passed at 2016-06-17 09:47:32.987.
-	 Executed 15 tests, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
-Test Suite 'SwiftWrapperTests' started at 2016-06-17 09:47:32.987
-Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' started.
-Test Case '-[DiffMatchPatchTestSuite.SwiftWrapperTests test_computeDiff]' passed (0.000 seconds).
-Test Suite 'SwiftWrapperTests' passed at 2016-06-17 09:47:32.988.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
-Test Suite 'DiffMatchPatchTests.xctest' passed at 2016-06-17 09:47:32.988.
-	 Executed 16 tests, with 0 failures (0 unexpected) in 0.013 (0.015) seconds
-Test Suite 'All tests' passed at 2016-06-17 09:47:32.988.
-	 Executed 16 tests, with 0 failures (0 unexpected) in 0.013 (0.016) seconds
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_linesToChars]' passed (0.004 seconds).
+Test Case '-[DiffMatchPatchTestSuite.InternalDiffMatchPatchTests test_diff_main]' started.
+2016-06-20 13:12:54.404 xctest[47650:1263183] diff_mainOfOldString 'Apples are a fruit.' 'Bananas are also fruit.'
+2016-06-20 13:12:54.404 xctest[47650:1263183] computing diff
+2016-06-20 13:12:54.404 xctest[47650:1263183] diff_halfMatchCreate
+2016-06-20 13:12:54.404 xctest[47650:1263183] res: (null)
+2016-06-20 13:12:54.404 xctest[47650:1263183] diff_bisectOfOldString
+2016-06-20 13:12:54.404 xctest[47650:1263183] diff_mainOfOldString 'Apple' 'Ba'
+2016-06-20 13:12:54.404 xctest[47650:1263183] computing diff
+2016-06-20 13:12:54.404 xctest[47650:1263183] diff_halfMatchCreate
+2016-06-20 13:12:54.405 xctest[47650:1263183] res: (null)
+2016-06-20 13:12:54.405 xctest[47650:1263183] diff_bisectOfOldString

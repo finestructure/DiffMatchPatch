@@ -366,6 +366,7 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
                               checkLines:(BOOL)checklines
                                 deadline:(NSTimeInterval)deadline
 {
+    NSLog(@"diff_mainOfOldString '%@' '%@'", text1, text2);
   // Check for null inputs.
   if (text1 == nil || text2 == nil) {
     NSLog(@"Null inputs. (diff_main)");
@@ -395,7 +396,9 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   text2 = [text2 substringWithRange:NSMakeRange(0, text2.length - commonlength)];
 
   // Compute the diff on the middle block.
+  NSLog(@"computing diff");
   diffs = [self diff_computeFromOldString:text1 andNewString:text2 checkLines:checklines deadline:deadline];
+  NSLog(@"done.");
 
   // Restore the prefix and suffix.
   if (commonprefix.length != 0) {
@@ -405,7 +408,9 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
     [diffs addObject:[Diff diffWithOperation:OperationDiffEqual andText:commonsuffix]];
   }
 
+  NSLog(@"Cleaning up");
   NSArray *cleanedUpDiffs = [self diff_cleanupMerge:diffs];
+  NSLog(@"done.");
   return cleanedUpDiffs;
 }
 
@@ -530,7 +535,9 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   }
 
   // Check to see if the problem can be split in two.
+  NSLog(@"diff_halfMatchCreate");
   NSArray *hm = (NSArray *)CFBridgingRelease(diff_halfMatchCreate((__bridge CFStringRef)text1, (__bridge CFStringRef)text2, self.Diff_Timeout));
+  NSLog(@"res: %@", hm);
   if (hm != nil) {
     @autoreleasepool {
       // A half-match was found, sort out the return data.
@@ -540,7 +547,9 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
       NSString *text2_b = hm[3];
       NSString *mid_common = hm[4];
       // Send both pairs off for separate processing.
+      NSLog(@"diffs_a: '%@', '%@'", text1_a, text2_a);
       NSArray *diffs_a = [self diff_mainOfOldString:text1_a andNewString:text2_a checkLines:checklines deadline:deadline];
+      NSLog(@"diffs_b: '%@', '%@'", text1_b, text2_b);
       NSArray *diffs_b = [self diff_mainOfOldString:text1_b andNewString:text2_b checkLines:checklines deadline:deadline];
       // Merge the results.
       diffs = [NSMutableArray arrayWithArray:diffs_a];
@@ -551,13 +560,16 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   }
 
   if (checklines && text1.length > 100 && text2.length > 100) {
+      NSLog(@"diff_lineModeFromOldString");
     return [self diff_lineModeFromOldString:text1 andNewString:text2 deadline:deadline];
   }
 
   @autoreleasepool {
+      NSLog(@"diff_bisectOfOldString");
     diffs = [self diff_bisectOfOldString:text1 andNewString:text2 deadline:deadline];
   }
 
+  NSLog(@"returning from diff_computeFromOldString: %@", diffs);
   return diffs;
 }
 
@@ -918,7 +930,7 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
 #define prevDiff ((Diff *)[diffs objectAtIndex:(thisPointer - 1)])
 #define thisDiff ((Diff *)[diffs objectAtIndex:thisPointer])
 #define nextDiff ((Diff *)[diffs objectAtIndex:(thisPointer + 1)])
-
+    NSLog(@"diffs count: %lu", immutableDiffs.count);
   if (immutableDiffs.count == 0) {
     return immutableDiffs;
   }
@@ -934,6 +946,7 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   NSString *text_insert = @"";
   NSUInteger commonlength;
   while (thisPointer < diffs.count) {
+      NSLog(@"diff: %@", thisDiff.text);
     switch (thisDiff.operation) {
       case OperationDiffInsert:
         count_insert++;
@@ -1012,7 +1025,7 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   if (((Diff *)diffs.lastObject).text.length == 0) {
     [diffs removeLastObject];  // Remove the dummy entry at the end.
   }
-
+  NSLog(@"middle");
   // Second pass: look for single edits surrounded on both sides by
   // equalities which can be shifted sideways to eliminate an equality.
   // e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC

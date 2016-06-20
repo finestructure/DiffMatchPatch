@@ -760,99 +760,105 @@ class InternalDiffMatchPatchTests: XCTestCase {
         XCTAssertEqual(diffs, dmp.diff_bisect(ofOldString: a, andNewString:b, deadline:Date.distantFuture.timeIntervalSinceReferenceDate), "Bisect timeout.")
     }
 
-// func test_diff_main() {
-//   let dmp = DiffMatchPatch()
-//
-//   // Perform a trivial diff.
-//   NSMutableArray *diffs = [NSMutableArray array];
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"", andNewString:"" checkLines:NO], "diff_main: Null case.")
-//
-//   diffs = [Diff(operation:.diffEqual, andText:"abc")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"abc" checkLines:NO], "diff_main: Equality.")
-//
-//   diffs = [Diff(operation:.diffEqual, andText:"ab"), Diff(operation:.diffInsert, andText:"123"), Diff(operation:.diffEqual, andText:"c")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"ab123c" checkLines:NO], "diff_main: Simple insertion.")
-//
-//   diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"123"), Diff(operation:.diffEqual, andText:"bc")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a123bc", andNewString:"abc" checkLines:NO], "diff_main: Simple deletion.")
-//
-//   diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffInsert, andText:"123"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffInsert, andText:"456"), Diff(operation:.diffEqual, andText:"c")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abc", andNewString:"a123b456c" checkLines:NO], "diff_main: Two insertions.")
-//
-//   diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"123"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffDelete, andText:"456"), Diff(operation:.diffEqual, andText:"c")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a123b456c", andNewString:"abc" checkLines:NO], "diff_main: Two deletions.")
-//
-//   // Perform a real diff.
-//   // Switch off the timeout.
-//   dmp.Diff_Timeout = 0;
-//   diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"b")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a", andNewString:"b" checkLines:NO], "diff_main: Simple case #1.")
-//
-//   diffs = [Diff(operation:.diffDelete, andText:"Apple"), Diff(operation:.diffInsert, andText:"Banana"), Diff(operation:.diffEqual, andText:"s are a"), Diff(operation:.diffInsert, andText:"lso"), Diff(operation:.diffEqual, andText:" fruit.")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"Apples are a fruit.", andNewString:"Bananas are also fruit." checkLines:NO], "diff_main: Simple case #2.")
-//
-//   diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"\u{00000680"), Diff(operation:.diffEqual, andText:"x"), Diff(operation:.diffDelete, andText:"\t"), Diff(operation:.diffInsert, andText:String(format:"%C", 0]]]
-//   NSString *aString = String(format:"\u{00000680x%C", 0];
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"ax\t", andNewString:aString checkLines:NO], "diff_main: Simple case #3.")
-//
-//   diffs = [Diff(operation:.diffDelete, andText:"1"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"y"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffDelete, andText:"2"), Diff(operation:.diffInsert, andText:"xab")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"1ayb2", andNewString:"abxab" checkLines:NO], "diff_main: Overlap #1.")
-//
-//   diffs = [Diff(operation:.diffInsert, andText:"xaxcx"), Diff(operation:.diffEqual, andText:"abc"), Diff(operation:.diffDelete, andText:"y")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"abcy", andNewString:"xaxcxabc" checkLines:NO], "diff_main: Overlap #2.")
-//
-//   diffs = [Diff(operation:.diffDelete, andText:"ABCD"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"="), Diff(operation:.diffInsert, andText:"-"), Diff(operation:.diffEqual, andText:"bcd"), Diff(operation:.diffDelete, andText:"="), Diff(operation:.diffInsert, andText:"-"), Diff(operation:.diffEqual, andText:"efghijklmnopqrs"), Diff(operation:.diffDelete, andText:"EFGHIJKLMNOefg")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"ABCDa=bcd=efghijklmnopqrsEFGHIJKLMNOefg", andNewString:"a-bcd-efghijklmnopqrs" checkLines:NO], "diff_main: Overlap #3.")
-//
-//   diffs = [Diff(operation:.diffInsert, andText:" "), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffInsert, andText:"nd"), Diff(operation:.diffEqual, andText:" [[Pennsylvania]]"), Diff(operation:.diffDelete, andText:", and [[New")]
-//   XCTAssertEqual(diffs, [dmp diff_mainOfOldString:"a [[Pennsylvania]] and [[New", andNewString:", and [[Pennsylvania]]" checkLines:NO], "diff_main: Large equality.")
-//
-//   dmp.Diff_Timeout = 0.1f;  // 100ms
-//   NSString *a = "`Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe:\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.\n";
-//   NSString *b = "I am the very model of a modern major general,\nI've information vegetable, animal, and mineral,\nI know the kings of England, and I quote the fights historical,\nFrom Marathon to Waterloo, in order categorical.\n";
-//   NSMutableString *aMutable = [NSMutableString stringWithString:a];
-//   NSMutableString *bMutable = [NSMutableString stringWithString:b];
-//   // Increase the text lengths by 1024 times to ensure a timeout.
-//   for (int x = 0; x < 10; x++) {
-//     [aMutable appendString:aMutable];
-//     [bMutable appendString:bMutable];
-//   }
-//   a = aMutable;
-//   b = bMutable;
-//   NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
-//   [dmp diff_mainOfOldString:a andNewString:b];
-//   NSTimeInterval endTime = [NSDate timeIntervalSinceReferenceDate];
-//   // Test that we took at least the timeout period.
-//   XCTAssertTrue((dmp.Diff_Timeout <= (endTime - startTime)), "Test that we took at least the timeout period.")
-//    // Test that we didn't take forever (be forgiving).
-//    // Theoretically this test could fail very occasionally if the
-//    // OS task swaps or locks up for a second at the wrong moment.
-//    // This will fail when running this as PPC code thru Rosetta on Intel.
-//   XCTAssertTrue(((dmp.Diff_Timeout * 2) > (endTime - startTime)), "Test that we didn't take forever (be forgiving).")
-//   dmp.Diff_Timeout = 0;
-//
-//   // Test the linemode speedup.
-//   // Must be long to pass the 200 character cutoff.
-//   a = "1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n";
-//   b = "abcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\n";
-//   XCTAssertEqual([dmp diff_mainOfOldString:a andNewString:b checkLines:YES], [dmp diff_mainOfOldString:a andNewString:b checkLines:NO], "diff_main: Simple line-mode.")
-//
-//   a = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
-//   b = "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij";
-//   XCTAssertEqual([dmp diff_mainOfOldString:a andNewString:b checkLines:YES], [dmp diff_mainOfOldString:a andNewString:b checkLines:NO], "diff_main: Single line-mode.")
-//
-//   a = "1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n";
-//   b = "abcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n";
-//   NSArray *texts_linemode = [self diff_rebuildtexts:[dmp diff_mainOfOldString:a andNewString:b checkLines:YES]];
-//   NSArray *texts_textmode = [self diff_rebuildtexts:[dmp diff_mainOfOldString:a andNewString:b checkLines:NO]];
-//   XCTAssertEqual(texts_textmode, texts_linemode, "diff_main: Overlap line-mode.")
-//
-//   // CHANGEME: Test null inputs
-//
-//   [dmp release];
-// }
-//
-//
+    func test_diff_main() {
+        let dmp = DiffMatchPatch()
+
+        // // Perform a trivial diff.
+        // var diffs = [Diff]()
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "", andNewString:"", checkLines: false), "diff_main: Null case.")
+        //
+        // diffs = [Diff(operation:.diffEqual, andText:"abc")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "abc", andNewString:"abc", checkLines: false), "diff_main: Equality.")
+        //
+        // diffs = [Diff(operation:.diffEqual, andText:"ab"), Diff(operation:.diffInsert, andText:"123"), Diff(operation:.diffEqual, andText:"c")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "abc", andNewString:"ab123c", checkLines: false), "diff_main: Simple insertion.")
+        //
+        // diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"123"), Diff(operation:.diffEqual, andText:"bc")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "a123bc", andNewString:"abc", checkLines: false), "diff_main: Simple deletion.")
+        //
+        // diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffInsert, andText:"123"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffInsert, andText:"456"), Diff(operation:.diffEqual, andText:"c")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "abc", andNewString:"a123b456c", checkLines: false), "diff_main: Two insertions.")
+        //
+        // diffs = [Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"123"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffDelete, andText:"456"), Diff(operation:.diffEqual, andText:"c")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "a123b456c", andNewString:"abc", checkLines: false), "diff_main: Two deletions.")
+        //
+        // // Perform a real diff.
+        // // Switch off the timeout.
+        // dmp.diff_Timeout = 0
+        // diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"b")]
+        // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "a", andNewString:"b", checkLines: false), "diff_main: Simple case #1.")
+    
+  // FIXME: halts
+  print("### start")
+  var diffs = [Diff(operation:.diffDelete, andText:"Apple"), Diff(operation:.diffInsert, andText:"Banana"), Diff(operation:.diffEqual, andText:"s are a"), Diff(operation:.diffInsert, andText:"lso"), Diff(operation:.diffEqual, andText:" fruit.")]
+  let res = dmp.diff_main(ofOldString: "Apples are a fruit.", andNewString:"Bananas are also fruit.", checkLines: false)
+  XCTAssertEqual(diffs, res, "diff_main: Simple case #2.")
+
+  // FIXME: halts
+  // diffs = [Diff(operation:.diffDelete, andText:"a"), Diff(operation:.diffInsert, andText:"\u{00000680}"), Diff(operation:.diffEqual, andText:"x"), Diff(operation:.diffDelete, andText:"\t"), Diff(operation:.diffInsert, andText:String(format:"%C", 0))]
+  // let aString = String(format:"\u{00000680}x%C", 0)
+  // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "ax\t", andNewString:aString, checkLines: false), "diff_main: Simple case #3.")
+
+  // FIXME: halts
+  // diffs = [Diff(operation:.diffDelete, andText:"1"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"y"), Diff(operation:.diffEqual, andText:"b"), Diff(operation:.diffDelete, andText:"2"), Diff(operation:.diffInsert, andText:"xab")]
+  // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "1ayb2", andNewString:"abxab", checkLines: false), "diff_main: Overlap #1.")
+
+  // FIXME: halts
+  // diffs = [Diff(operation:.diffInsert, andText:"xaxcx"), Diff(operation:.diffEqual, andText:"abc"), Diff(operation:.diffDelete, andText:"y")]
+  // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "abcy", andNewString:"xaxcxabc", checkLines: false), "diff_main: Overlap #2.")
+
+  // FIXME: halts
+  // diffs = [Diff(operation:.diffDelete, andText:"ABCD"), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffDelete, andText:"="), Diff(operation:.diffInsert, andText:"-"), Diff(operation:.diffEqual, andText:"bcd"), Diff(operation:.diffDelete, andText:"="), Diff(operation:.diffInsert, andText:"-"), Diff(operation:.diffEqual, andText:"efghijklmnopqrs"), Diff(operation:.diffDelete, andText:"EFGHIJKLMNOefg")]
+  // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "ABCDa=bcd=efghijklmnopqrsEFGHIJKLMNOefg", andNewString:"a-bcd-efghijklmnopqrs", checkLines: false), "diff_main: Overlap #3.")
+
+  // FIXME: halts
+  // diffs = [Diff(operation:.diffInsert, andText:" "), Diff(operation:.diffEqual, andText:"a"), Diff(operation:.diffInsert, andText:"nd"), Diff(operation:.diffEqual, andText:" [[Pennsylvania]]"), Diff(operation:.diffDelete, andText:", and [[New")]
+  // XCTAssertEqual(diffs, dmp.diff_main(ofOldString: "a [[Pennsylvania]] and [[New", andNewString:", and [[Pennsylvania]]", checkLines: false), "diff_main: Large equality.")
+
+  // FIXME: halts
+  // dmp.diff_Timeout = 0.1  // 100ms
+  // var a = "`Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe:\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.\n";
+  // var b = "I am the very model of a modern major general,\nI've information vegetable, animal, and mineral,\nI know the kings of England, and I quote the fights historical,\nFrom Marathon to Waterloo, in order categorical.\n";
+  // // Increase the text lengths by 1024 times to ensure a timeout.
+  // for _ in 0..<10 {
+  //     a += a
+  //     b += b
+  // }
+  // let startTime = Date.timeIntervalSinceReferenceDate
+  // dmp.diff_main(ofOldString: a, andNewString:b)
+  // let endTime = Date.timeIntervalSinceReferenceDate
+  // // Test that we took at least the timeout period.
+  // XCTAssertTrue((dmp.diff_Timeout <= (endTime - startTime)), "Test that we took at least the timeout period.")
+  //  // Test that we didn't take forever (be forgiving).
+  //  // Theoretically this test could fail very occasionally if the
+  //  // OS task swaps or locks up for a second at the wrong moment.
+  //  // This will fail when running this as PPC code thru Rosetta on Intel.
+  // XCTAssertTrue(((dmp.diff_Timeout * 2) > (endTime - startTime)), "Test that we didn't take forever (be forgiving).")
+  // dmp.diff_Timeout = 0
+
+  // FIXME: halts
+  // Test the linemode speedup.
+  // Must be long to pass the 200 character cutoff.
+  // a = "1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n"
+  // b = "abcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\nabcdefghij\n"
+  // XCTAssertEqual(dmp.diff_main(ofOldString: a, andNewString: b, checkLines: true), dmp.diff_main(ofOldString: a, andNewString:b, checkLines: false), "diff_main: Simple line-mode.")
+
+  // FIXME: halts
+  // a = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+  // b = "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij"
+  // XCTAssertEqual(dmp.diff_main(ofOldString: a, andNewString: b, checkLines: true), dmp.diff_main(ofOldString: a, andNewString:b, checkLines: false), "diff_main: Single line-mode.")
+
+  // FIXME: halts
+  // a = "1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n1234567890\n"
+  // b = "abcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n1234567890\n1234567890\n1234567890\nabcdefghij\n"
+  // let texts_linemode = concatTexts(diffs: dmp.diff_main(ofOldString: a, andNewString: b, checkLines: true))
+  // let texts_textmode = concatTexts(diffs: dmp.diff_main(ofOldString: a, andNewString: b, checkLines: false))
+  // XCTAssertEqual(texts_textmode, texts_linemode, "diff_main: Overlap line-mode.")
+
+  // CHANGEME: Test null inputs
+}
+
+
 // #pragma mark Match Test Functions
 // //  MATCH TEST FUNCTIONS
 //
@@ -1058,7 +1064,7 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //   patches = [dmp patch_makeFromOldString:text1 andNewString:text2];
 //   XCTAssertEqual(expectedPatch, [dmp patch_toText:patches], "patch_make: Text1+Text2 inputs.")
 //
-//   NSMutableArray *diffs = [dmp diff_mainOfOldString:text1 andNewString:text2 checkLines:NO];
+//   NSMutableArray *diffs = dmp.diff_main(ofOldString: text1 andNewString:text2 checkLines: false);
 //   patches = [dmp patch_makeFromDiffs:diffs];
 //   XCTAssertEqual(expectedPatch, [dmp patch_toText:patches], "patch_make: Diff input.")
 //
@@ -1285,24 +1291,21 @@ class InternalDiffMatchPatchTests: XCTestCase {
 //     XCTAssertEqual(res.length2, 4ul);
 // }
 //
-// #pragma mark Test Utility Functions
-// //  TEST UTILITY FUNCTIONS
-//
-//
-// - (NSArray *)diff_rebuildtexts:(NSMutableArray *)diffs;
-// {
-//   NSArray *text = [[NSMutableString string], [NSMutableString string]]
-//   for (Diff *myDiff in diffs) {
-//     if (myDiff.operation != .diffInsert) {
-//       [[text objectAtIndex:0] appendString:myDiff.text];
-//     }
-//     if (myDiff.operation != .diffDelete) {
-//       [[text objectAtIndex:1] appendString:myDiff.text];
-//     }
-//   }
-//   return text;
-// }
-//
 // @end
 
+}
+
+func concatTexts(diffs: [Diff]) -> [String] {
+  var text = ["", ""]
+  for d in diffs {
+      switch d.operation {
+      case .diffInsert:
+          text[0] = text[0] + d.text
+      case .diffDelete:
+          text[1] = text[1] + d.text
+      default:
+          break
+      }
+  }
+  return text
 }
